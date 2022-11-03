@@ -1,20 +1,19 @@
 package agency.five.codebase.android.movieapp.ui.component
 
 import agency.five.codebase.android.movieapp.R
+import agency.five.codebase.android.movieapp.ui.theme.LocalSpacing
+import agency.five.codebase.android.movieapp.ui.theme.Typography
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 data class MovieCategoryLabelViewState(
     val itemId: Int,
@@ -29,33 +28,46 @@ sealed class MovieCategoryLabelTextViewState {
 
 @Composable
 fun MovieCategoryLabel(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
     labelViewState: MovieCategoryLabelViewState
 ) {
-    if (labelViewState.isSelected) {
-        TextSelected(labelViewState)
-    } else {
-        TextNotSelected(labelViewState)
+    Column(
+        modifier = modifier
+            .clickable { onClick },
+    ) {
+        if (labelViewState.isSelected) {
+            TextSelected(labelViewState)
+        } else {
+            TextNotSelected(labelViewState)
+        }
     }
 }
 
 @Composable
 fun TextSelected(labelViewState: MovieCategoryLabelViewState) {
-    Column {
-        Text(
-            text = getTextSource(labelViewState = labelViewState),
-            fontSize = 16.sp,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.size(4.dp))
-        Divider(thickness = 3.dp, color = Color.Black)
-    }
+    Text(
+        text = getTextSource(labelViewState = labelViewState),
+        style = Typography.body1,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(
+                dimensionResource(id = R.dimen.movie_category_label_selected_text_height)
+            )
+    )
+    Spacer(modifier = Modifier.size(LocalSpacing.current.extraSmall))
+    Divider(
+        thickness = dimensionResource(id = R.dimen.movie_category_divider_thickness),
+        color = Color.Black
+    )
+
 }
 
 @Composable
 fun TextNotSelected(labelViewState: MovieCategoryLabelViewState) {
     Text(
         text = getTextSource(labelViewState = labelViewState),
-        fontSize = 16.sp,
+        style = Typography.body1,
         color = Color.Gray
     )
 }
@@ -71,14 +83,13 @@ fun getTextSource(labelViewState: MovieCategoryLabelViewState): String {
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun MovieCategoryLabelSelectedPreview() {
     val textFromString = MovieCategoryLabelTextViewState.LabelTextFromString("Movies")
     val viewStateString = MovieCategoryLabelViewState(1, true, textFromString)
 
-    MovieCategoryLabel(labelViewState = viewStateString)
+    MovieCategoryLabel(labelViewState = viewStateString, onClick = {})
 }
 
 @Preview(showBackground = true)
@@ -87,5 +98,5 @@ fun MovieCategoryLabelNotSelectedPreview() {
     val textFromRes = MovieCategoryLabelTextViewState.LabelTextFromResource(R.string.movies_text)
     val viewStateStringRes = MovieCategoryLabelViewState(2, false, textFromRes)
 
-    MovieCategoryLabel(labelViewState = viewStateStringRes)
+    MovieCategoryLabel(labelViewState = viewStateStringRes, onClick = {})
 }

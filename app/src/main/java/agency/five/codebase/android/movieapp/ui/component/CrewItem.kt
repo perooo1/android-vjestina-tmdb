@@ -1,19 +1,15 @@
 package agency.five.codebase.android.movieapp.ui.component
 
 import agency.five.codebase.android.movieapp.mock.MoviesMock
+import agency.five.codebase.android.movieapp.ui.theme.Typography
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 data class CrewItemViewState(
     val name: String,
@@ -22,18 +18,24 @@ data class CrewItemViewState(
 
 @Composable
 fun CrewItem(
+    modifier: Modifier = Modifier
+        .height(40.dp),
     viewState: CrewItemViewState
 ) {
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         Text(
             text = viewState.name,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold
+            style = Typography.h2,
+            maxLines = CrewItemConstants.MAX_LINES,
+            overflow = TextOverflow.Ellipsis,
         )
         Text(
             text = viewState.job,
-            fontSize = 10.sp,
-            fontWeight = FontWeight.Light
+            style = Typography.subtitle1,
+            maxLines = CrewItemConstants.MAX_LINES,
+            overflow = TextOverflow.Ellipsis,
         )
     }
 }
@@ -45,5 +47,8 @@ fun CrewItemPreview() {
     val crewItemViewState = CrewItemViewState(crewman.name, crewman.job)
 
     CrewItem(viewState = crewItemViewState)
+}
 
+private object CrewItemConstants{
+    const val MAX_LINES = 1
 }

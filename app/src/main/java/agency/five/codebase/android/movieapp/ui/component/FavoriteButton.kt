@@ -1,6 +1,7 @@
 package agency.five.codebase.android.movieapp.ui.component
 
 import agency.five.codebase.android.movieapp.R
+import agency.five.codebase.android.movieapp.ui.theme.LocalSpacing
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,28 +20,32 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun FavoriteButton(
     modifier: Modifier = Modifier
+        .size(32.dp),
+    isFavorite: Boolean = false,
+    onCLick: (Boolean) -> Unit
 ) {
-
-    var isFavorite by rememberSaveable { mutableStateOf(true) }
-
     Image(
         painter = painterResource(
             id = if (isFavorite) R.drawable.ic_baseline_favorite_24_filled_white else R.drawable.ic_baseline_favorite_24_border_white
         ),
         contentDescription = null,
-
-        modifier = Modifier
-            .clickable { isFavorite = !isFavorite }
-            .size(32.dp)
-            .background(color = Color.Blue, shape = CircleShape)
-            .padding(5.dp),
+        modifier = modifier
+            .clickable { onCLick(isFavorite.not()) }
+            .background(
+                color = Color.Gray.copy(alpha = 0.5f),
+                shape = CircleShape
+            )
+            .padding(LocalSpacing.current.btn_favorite_icon_padding),
         contentScale = ContentScale.Crop
     )
-
 }
 
 @Preview(showBackground = true)
 @Composable
 fun FavoriteButtonPreview() {
-    FavoriteButton()
+    var isFavorite by rememberSaveable { mutableStateOf(true) }
+
+    FavoriteButton(isFavorite = isFavorite) {
+        isFavorite = it
+    }
 }
