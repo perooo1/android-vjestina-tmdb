@@ -11,6 +11,7 @@ import agency.five.codebase.android.movieapp.ui.theme.Typography
 import agency.five.codebase.android.movieapp.ui.theme.spacing
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.MaterialTheme
@@ -25,12 +26,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 
-
 private val favoritesMapper: FavoritesMapper = FavoritesMapperImpl()
 
 val movies = MoviesMock.getMoviesList()
 val favoriteMovies = movies.filter { it.isFavorite }
-
 
 val favoritesViewState = favoritesMapper.toFavoritesViewState(favoriteMovies)
 
@@ -48,31 +47,19 @@ fun FavoritesScreen(
         modifier = modifier
             .fillMaxSize()
     ) {
-        Text(
-            text = stringResource(id = R.string.favorites_text),
-            style = Typography.h2,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(
-                    start = MaterialTheme.spacing.medium,
-                    top = MaterialTheme.spacing.large,
-                    end = MaterialTheme.spacing.medium
-                )
-        )
-        Spacer(
-            modifier = Modifier
-                .height(
-                    MaterialTheme.spacing.spacer_favorites_screen_header_text_list
-                )
-        )
         LazyVerticalGrid(
             columns = GridCells.Fixed(count = 3),
             contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.medium),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium),
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
         ) {
+            item(
+                span = {
+                    GridItemSpan(maxLineSpan)
+                }
+            ) {
+                FavoritesHeader()
+            }
             items(
                 items = favoritesViewState.favoriteMovies,
                 key = { movie ->
@@ -90,6 +77,27 @@ fun FavoritesScreen(
             }
         }
     }
+}
+
+@Composable
+fun FavoritesHeader() {
+    Text(
+        text = stringResource(id = R.string.favorites_text),
+        style = Typography.h2,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                top = MaterialTheme.spacing.large
+            )
+    )
+    Spacer(
+        modifier = Modifier
+            .height(
+                MaterialTheme.spacing.spacer_favorites_screen_header_text_list
+            )
+    )
 }
 
 @Preview(showBackground = true)
