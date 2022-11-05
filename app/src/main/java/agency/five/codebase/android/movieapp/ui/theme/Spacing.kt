@@ -17,7 +17,8 @@ data class Spacing(
 
     val actor_card_text_padding_start_end: Dp = 10.dp,
     val actor_card_text_padding_top: Dp = 6.dp,
-    val btn_favorite_icon_padding: Dp = 5.dp
+    val btn_favorite_icon_padding: Dp = 5.dp,
+    val spacer_favorites_screen_header_text_list: Dp = 21.dp
 )
 
 val LocalSpacing = compositionLocalOf { Spacing() }

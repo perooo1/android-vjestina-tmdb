@@ -3,4 +3,5 @@
     <string name="actor_image">Actor image</string>
     <string name="movies_text">Movies</string>
     <string name="movie_image">Movie image</string>
+    <string name="favorites_text">Favorites</string>
 </resources>
