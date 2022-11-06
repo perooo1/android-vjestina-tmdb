@@ -6,8 +6,8 @@ import agency.five.codebase.android.movieapp.ui.component.MovieCard
 import agency.five.codebase.android.movieapp.ui.component.MovieViewState
 import agency.five.codebase.android.movieapp.ui.favorites.mapper.FavoritesMapper
 import agency.five.codebase.android.movieapp.ui.favorites.mapper.FavoritesMapperImpl
+import agency.five.codebase.android.movieapp.ui.theme.HeaderText
 import agency.five.codebase.android.movieapp.ui.theme.MovieAppTheme
-import agency.five.codebase.android.movieapp.ui.theme.Typography
 import agency.five.codebase.android.movieapp.ui.theme.spacing
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -17,9 +17,9 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -83,7 +83,7 @@ fun FavoritesScreen(
 fun FavoritesHeader() {
     Text(
         text = stringResource(id = R.string.favorites_text),
-        style = Typography.h2,
+        style = HeaderText,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         modifier = Modifier

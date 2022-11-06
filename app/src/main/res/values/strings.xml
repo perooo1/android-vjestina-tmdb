@@ -4,4 +4,7 @@
     <string name="movies_text">Movies</string>
     <string name="movie_image">Movie image</string>
     <string name="favorites_text">Favorites</string>
+    <string name="overview_text">Overview</string>
+    <string name="user_score_text">User Score</string>
+    <string name="top_billed_cast_text">Top Billed Cast</string>
 </resources>

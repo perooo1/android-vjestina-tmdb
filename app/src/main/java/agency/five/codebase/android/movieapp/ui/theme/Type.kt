@@ -5,7 +5,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
+
+
+val MovieHeroTitle = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Bold,
+    fontSize = 24.sp
+)
+
+val HeaderText = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Bold,
+    fontSize = 20.sp,
+    color = Color(0xFF0B253F)
+)
 
 // Set of Material typography styles to start with
 val Typography = Typography(

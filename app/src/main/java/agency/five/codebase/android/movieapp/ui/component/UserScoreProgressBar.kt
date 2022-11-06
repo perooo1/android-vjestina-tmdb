@@ -1,5 +1,6 @@
 package agency.five.codebase.android.movieapp.ui.component
 
+import agency.five.codebase.android.movieapp.ui.theme.Typography
 import androidx.annotation.FloatRange
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
@@ -54,7 +55,7 @@ fun UserScoreProgressBar(
         Text(
             text = userScore.toString(),
             color = Color.Black,
-            fontSize = 15.sp
+            style = Typography.h2
         )
     }
 }

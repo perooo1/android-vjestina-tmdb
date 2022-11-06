@@ -18,12 +18,14 @@ class MovieDetailsMapperImpl : MovieDetailsMapper {
             isFavorite = movieDetails.movie.isFavorite,
             crew = movieDetails.crew.map { crewman ->
                 CrewmanViewState(
+                    crewman.id,
                     crewman.name,
                     crewman.job
                 )
             },
             cast = movieDetails.cast.map { actor ->
                 ActorViewState(
+                    actor.id,
                     actor.name,
                     actor.character,
                     actor.imageUrl
@@ -34,6 +36,7 @@ class MovieDetailsMapperImpl : MovieDetailsMapper {
 
     override fun toCrewmanViewState(crewman: Crewman): CrewmanViewState {
         return CrewmanViewState(
+            crewman.id,
             crewman.name,
             crewman.job
         )
@@ -41,6 +44,7 @@ class MovieDetailsMapperImpl : MovieDetailsMapper {
 
     override fun toActorViewState(actor: Actor): ActorViewState {
         return ActorViewState(
+            actor.id,
             actor.name,
             actor.character,
             actor.imageUrl
