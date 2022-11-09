@@ -29,8 +29,6 @@ import coil.compose.AsyncImage
 
 private val movieDetailsMapper: MovieDetailsMapper = MovieDetailsMapperImpl()
 
-private val crewmanViewState = movieDetailsMapper.toCrewmanViewState(MoviesMock.getCrewman())
-private val actorViewState = movieDetailsMapper.toActorViewState(MoviesMock.getActor())
 private val movieDetailsViewState =
     movieDetailsMapper.toMovieDetailsViewState(MoviesMock.getMovieDetails())
 
