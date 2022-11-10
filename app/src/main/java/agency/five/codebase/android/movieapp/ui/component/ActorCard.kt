@@ -2,11 +2,15 @@ package agency.five.codebase.android.movieapp.ui.component
 
 import agency.five.codebase.android.movieapp.R
 import agency.five.codebase.android.movieapp.mock.MoviesMock
-import agency.five.codebase.android.movieapp.ui.theme.LocalSpacing
 import agency.five.codebase.android.movieapp.ui.theme.Typography
-import androidx.compose.foundation.layout.*
+import agency.five.codebase.android.movieapp.ui.theme.spacing
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,7 +20,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 
 data class ActorCardViewState(
@@ -29,10 +32,6 @@ data class ActorCardViewState(
 fun ActorCard(
     actorCardViewState: ActorCardViewState,
     modifier: Modifier = Modifier
-        .size(
-            width = 125.dp,
-            height = 209.dp
-        )
 ) {
     Card(
         modifier = modifier,
@@ -59,24 +58,24 @@ fun ActorCard(
             Text(
                 text = actorCardViewState.name,
                 style = Typography.h3,
-                maxLines = ActorCardConstants.MAX_LINES,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .padding(
-                        start = LocalSpacing.current.actor_card_text_padding_start_end,
-                        top = LocalSpacing.current.actor_card_text_padding_top,
-                        end = LocalSpacing.current.actor_card_text_padding_start_end
+                        start = MaterialTheme.spacing.actor_card_text_padding_start_end,
+                        top = MaterialTheme.spacing.actor_card_text_padding_top,
+                        end = MaterialTheme.spacing.actor_card_text_padding_start_end
                     )
             )
             Text(
                 text = actorCardViewState.character,
-                maxLines = ActorCardConstants.MAX_LINES,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 style = Typography.h4,
                 modifier = Modifier
                     .padding(
-                        start = LocalSpacing.current.actor_card_text_padding_start_end,
-                        end = LocalSpacing.current.actor_card_text_padding_start_end
+                        start = MaterialTheme.spacing.actor_card_text_padding_start_end,
+                        end = MaterialTheme.spacing.actor_card_text_padding_start_end
                     )
             )
         }
@@ -94,8 +93,4 @@ fun ActorCardPreview() {
     )
 
     ActorCard(actorCardViewState = viewState)
-}
-
-private object ActorCardConstants {
-    const val MAX_LINES = 1
 }

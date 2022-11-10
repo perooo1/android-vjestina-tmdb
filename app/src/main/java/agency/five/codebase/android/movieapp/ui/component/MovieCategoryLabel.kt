@@ -1,12 +1,13 @@
 package agency.five.codebase.android.movieapp.ui.component
 
 import agency.five.codebase.android.movieapp.R
-import agency.five.codebase.android.movieapp.ui.theme.LocalSpacing
 import agency.five.codebase.android.movieapp.ui.theme.Typography
+import agency.five.codebase.android.movieapp.ui.theme.spacing
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -28,13 +29,14 @@ sealed class MovieCategoryLabelTextViewState {
 
 @Composable
 fun MovieCategoryLabel(
-    modifier: Modifier = Modifier,
+    labelViewState: MovieCategoryLabelViewState,
     onClick: () -> Unit,
-    labelViewState: MovieCategoryLabelViewState
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
-            .clickable { onClick },
+            .clickable { onClick() }
+            .width(IntrinsicSize.Min),
     ) {
         if (labelViewState.isSelected) {
             TextSelected(labelViewState)
@@ -55,10 +57,11 @@ fun TextSelected(labelViewState: MovieCategoryLabelViewState) {
                 dimensionResource(id = R.dimen.movie_category_label_selected_text_height)
             )
     )
-    Spacer(modifier = Modifier.size(LocalSpacing.current.extraSmall))
+    Spacer(modifier = Modifier.size(MaterialTheme.spacing.extraSmall))
     Divider(
         thickness = dimensionResource(id = R.dimen.movie_category_divider_thickness),
-        color = Color.Black
+        color = Color.Black,
+        modifier = Modifier.fillMaxWidth()
     )
 
 }
