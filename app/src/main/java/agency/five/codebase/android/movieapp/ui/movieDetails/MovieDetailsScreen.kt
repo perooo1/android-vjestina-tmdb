@@ -39,8 +39,8 @@ fun MovieDetailsRoute() {
 
 @Composable
 fun MovieDetailsScreen(
-    modifier: Modifier = Modifier,
-    movieDetailsViewState: MovieDetailsViewState
+    movieDetailsViewState: MovieDetailsViewState,
+    modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
 
@@ -97,11 +97,14 @@ fun MovieDetailsHeroSection(
                 verticalAlignment = Alignment.CenterVertically,
 
                 ) {
-                UserScoreProgressBar(userScore = movieDetailsViewState.voteAverage)
+                UserScoreProgressBar(
+                    userScore = movieDetailsViewState.voteAverage,
+                    modifier = Modifier.size(42.dp)
+                )
                 Text(
                     text = stringResource(id = R.string.user_score_text),
                     style = Typography.h2,
-                    maxLines = ActorCardConstants.MAX_LINES,
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.padding(start = MaterialTheme.spacing.small)
                 )
@@ -110,7 +113,7 @@ fun MovieDetailsHeroSection(
             Text(
                 text = movieDetailsViewState.title,
                 style = MovieHeroTitle,
-                maxLines = ActorCardConstants.MAX_LINES,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.padding(
                     start = dimensionResource(id = R.dimen.movie_details_hero_movie_title_padding)
@@ -182,11 +185,12 @@ fun MovieDetailsOverviewSection(
                     crewman.id
                 }
             ) { crewman ->
-                CrewItem(viewState = CrewItemViewState(crewman.name, crewman.job))
+                CrewItem(
+                    viewState = CrewItemViewState(crewman.name, crewman.job),
+                    modifier = Modifier.height(40.dp)
+                )
             }
         }
-
-
     }
 }
 
@@ -223,8 +227,9 @@ fun MovieDetailsCastSection(
                     actorCardViewState = ActorCardViewState(
                         actor.name,
                         actor.character,
-                        actor.imageUrl
-                    )
+                        actor.imageUrl,
+                    ),
+                    modifier = Modifier.size(125.dp, 209.dp)
                 )
             }
         }
@@ -245,7 +250,6 @@ fun MovieDetailsOverviewSectionPreview() {
     MovieAppTheme {
         MovieDetailsOverviewSection(movieDetailsViewState = movieDetailsViewState)
     }
-
 }
 
 @Preview(showBackground = true)
@@ -254,7 +258,6 @@ fun MovieDetailsCastSectionPreview() {
     MovieAppTheme {
         MovieDetailsCastSection(movieDetailsViewState = movieDetailsViewState)
     }
-
 }
 
 @Preview(showBackground = true)

@@ -15,4 +15,7 @@
     <string name="tv">TV</string>
     <string name="today">Today</string>
     <string name="this_week">This Week</string>
+    <string name="whats_popular">What\'s popular</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="upcoming">Upcoming</string>
 </resources>

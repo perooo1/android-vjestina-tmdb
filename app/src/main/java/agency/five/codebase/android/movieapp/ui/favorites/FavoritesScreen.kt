@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 
 private val favoritesMapper: FavoritesMapper = FavoritesMapperImpl()
 
@@ -64,16 +65,14 @@ fun FavoritesScreen(
                 items = favoritesViewState.favoriteMovies,
                 key = { movie ->
                     movie.id
-                }) { movie ->
-                MovieCard(
-                    movieViewState = MovieViewState(
-                        imageUrl = movie.imageUrl,
-                        isFavorite = rememberSaveable {
-                            mutableStateOf(movie.isFavorite)
-                        }
-                    )
-                ) {
                 }
+            ) { movie ->
+                MovieCard(
+                    movieViewState = MovieViewState(movie.imageUrl, movie.isFavorite),
+                    onFavouriteButtonClick = { },
+                    onMovieCardClick = { },
+                    modifier = Modifier.size(122.dp, 179.dp)
+                )
             }
         }
     }
