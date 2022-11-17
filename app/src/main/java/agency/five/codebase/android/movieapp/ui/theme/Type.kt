@@ -19,8 +19,15 @@ val HeaderText = TextStyle(
     fontFamily = FontFamily.Default,
     fontWeight = FontWeight.Bold,
     fontSize = 20.sp,
-    color = Color(0xFF0B253F)
+    color = Blue
 )
+
+val BottomNavText = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Normal,
+    fontSize = 10.sp
+)
+
 
 // Set of Material typography styles to start with
 val Typography = Typography(

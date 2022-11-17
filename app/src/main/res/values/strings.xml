@@ -18,4 +18,8 @@
     <string name="whats_popular">What\'s popular</string>
     <string name="now_playing">Now Playing</string>
     <string name="upcoming">Upcoming</string>
+
+    <string name="home">Home</string>
+    <string name="favorites">Favorites</string>
+    <string name="back_icon">Back icon</string>
 </resources>
