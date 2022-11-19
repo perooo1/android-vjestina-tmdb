@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -35,14 +34,20 @@ val favoriteMovies = movies.filter { it.isFavorite }
 val favoritesViewState = favoritesMapper.toFavoritesViewState(favoriteMovies)
 
 @Composable
-fun FavoritesRoute() {
-    //TODO
+fun FavoritesRoute(onNavigateToMovieDetails: (Int) -> Unit) {
+    val favorites by remember {
+        mutableStateOf(favoritesViewState)
+    }
+
+    FavoritesScreen(favorites, onNavigateToMovieDetails)
+
 }
 
 @Composable
 fun FavoritesScreen(
-    modifier: Modifier = Modifier,
-    favoritesViewState: FavoritesViewState
+    favoritesViewState: FavoritesViewState,
+    onNavigateToMovieDetails: (Int) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
@@ -70,7 +75,7 @@ fun FavoritesScreen(
                 MovieCard(
                     movieViewState = MovieViewState(movie.imageUrl, movie.isFavorite),
                     onFavouriteButtonClick = { },
-                    onMovieCardClick = { },
+                    onMovieCardClick = { onNavigateToMovieDetails(movie.id) },
                     modifier = Modifier.size(122.dp, 179.dp)
                 )
             }
@@ -107,6 +112,7 @@ fun FavoritesScreenPreview() {
     }
 
     MovieAppTheme {
-        FavoritesScreen(favoritesViewState = viewState)
+        FavoritesScreen(viewState, {})
     }
 }
+

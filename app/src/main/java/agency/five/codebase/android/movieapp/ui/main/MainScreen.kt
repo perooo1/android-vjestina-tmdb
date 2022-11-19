@@ -14,10 +14,7 @@ import androidx.compose.material.*
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,7 +36,22 @@ fun MainScreen() {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val showBottomBar by remember {
-        // your code goes here ...
+
+        derivedStateOf {
+            when (navBackStackEntry?.destination?.route) {
+                MovieDetailsDestination.route -> false
+                else -> true
+            }
+        }
+
+        /*
+        if (navBackStackEntry?.destination?.route == MovieDetailsDestination.route) {
+            mutableStateOf(false)
+        } else {
+            mutableStateOf(true)
+        }
+        */
+
     }
 
     val showBackIcon = !showBottomBar
@@ -58,7 +70,13 @@ fun MainScreen() {
                         NavigationItem.HomeDestination,
                         NavigationItem.FavoritesDestination,
                     ),
-                    onNavigateToDestination =,// your code goes here ...,
+                    onNavigateToDestination = { destination ->
+                        navController.navigate(destination.route) {
+                            this.popUpTo(destination.route) {
+                                inclusive = true
+                            }
+                        }
+                    },
                     currentDestination = navBackStackEntry?.destination
                 )
         }
@@ -74,12 +92,24 @@ fun MainScreen() {
             ) {
                 composable(NavigationItem.HomeDestination.route) {
                     HomeScreenRoute(
-                        onNavigateToMovieDetails = // your code goes here ...
+                        onNavigateToMovieDetails = { movieId ->
+                            navController.navigate(
+                                MovieDetailsDestination.createNavigationRoute(
+                                    movieId
+                                )
+                            )
+                        }
                     )
                 }
                 composable(NavigationItem.FavoritesDestination.route) {
                     FavoritesRoute(
-                        onNavigateToMovieDetails = // your code goes here ...
+                        onNavigateToMovieDetails = { movieId ->
+                            navController.navigate(
+                                MovieDetailsDestination.createNavigationRoute(
+                                    movieId
+                                )
+                            )
+                        }
                     )
                 }
                 composable(
@@ -187,7 +217,6 @@ private fun BottomNavigationBar(
                 },
                 onClick = { onNavigateToDestination(destination) }
             )
-
         }
     }
 }
