@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -34,23 +33,14 @@ import androidx.navigation.navArgument
 fun MainScreen() {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val showBottomBar by remember {
 
+    val showBottomBar by remember {
         derivedStateOf {
             when (navBackStackEntry?.destination?.route) {
                 MovieDetailsDestination.route -> false
                 else -> true
             }
         }
-
-        /*
-        if (navBackStackEntry?.destination?.route == MovieDetailsDestination.route) {
-            mutableStateOf(false)
-        } else {
-            mutableStateOf(true)
-        }
-        */
-
     }
 
     val showBackIcon =
@@ -60,7 +50,6 @@ fun MainScreen() {
             !showBottomBar
         }
 
-    //val showBackIcon = !showBottomBar
     Scaffold(
         topBar = {
             TopBar(
@@ -226,33 +215,3 @@ private fun BottomNavigationBar(
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun TopBarPreview() {
-    MovieAppTheme {
-        TopBar(navigationIcon = { BackIcon(onBackClick = {}) })
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BottomNavigationBarPreview() {
-    MovieAppTheme {
-
-        val navController = rememberNavController()
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-
-        val destinations = listOf(
-            NavigationItem.HomeDestination,
-            NavigationItem.FavoritesDestination,
-        )
-
-        BottomNavigationBar(
-            destinations = destinations,
-            onNavigateToDestination = {},
-            currentDestination = navBackStackEntry?.destination
-        )
-    }
-}
-

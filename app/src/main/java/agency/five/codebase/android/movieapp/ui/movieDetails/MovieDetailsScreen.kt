@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -29,7 +28,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 
 private val movieDetailsMapper: MovieDetailsMapper = MovieDetailsMapperImpl()
@@ -51,38 +49,37 @@ fun MovieDetailsScreen(
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
-
     Column(
         modifier = modifier
             .verticalScroll(scrollState)
     ) {
-        MovieDetailsHeroSection(movieDetailsViewState = movieDetailsViewState)
+        MovieDetailsHeroSection(movieDetailsViewState)
         Spacer(
             modifier = Modifier
                 .height(
-                    20.dp
+                    dimensionResource(id = R.dimen.movie_details_screen_section_spacer)
                 )
         )
-        MovieDetailsOverviewSection(movieDetailsViewState = movieDetailsViewState)
+        MovieDetailsOverviewSection(movieDetailsViewState)
         Spacer(
             modifier = Modifier
                 .height(
-                    20.dp
+                    dimensionResource(id = R.dimen.movie_details_screen_section_spacer)
                 )
         )
-        MovieDetailsCastSection(movieDetailsViewState = movieDetailsViewState)
+        MovieDetailsCastSection(movieDetailsViewState)
     }
 }
 
 @Composable
 fun MovieDetailsHeroSection(
+    movieDetailsViewState: MovieDetailsViewState,
     modifier: Modifier = Modifier
-        .fillMaxWidth()
-        .height(dimensionResource(id = R.dimen.movie_details_hero_height)),
-    movieDetailsViewState: MovieDetailsViewState
 ) {
     Box(
         modifier = modifier
+            .fillMaxWidth()
+            .height(dimensionResource(id = R.dimen.movie_details_hero_height))
     ) {
         AsyncImage(
             model = movieDetailsViewState.imageUrl,
@@ -107,7 +104,9 @@ fun MovieDetailsHeroSection(
                 ) {
                 UserScoreProgressBar(
                     userScore = movieDetailsViewState.voteAverage,
-                    modifier = Modifier.size(42.dp)
+                    modifier = Modifier.size(
+                        dimensionResource(id = R.dimen.user_score_progress_bar_size)
+                    )
                 )
                 Text(
                     text = stringResource(id = R.string.user_score_text),
@@ -143,8 +142,8 @@ fun MovieDetailsHeroSection(
 
 @Composable
 fun MovieDetailsOverviewSection(
-    modifier: Modifier = Modifier,
-    movieDetailsViewState: MovieDetailsViewState
+    movieDetailsViewState: MovieDetailsViewState,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
@@ -171,11 +170,9 @@ fun MovieDetailsOverviewSection(
         Text(
             text = movieDetailsViewState.overview,
             style = Typography.body1,
-            maxLines = 6,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
                 .fillMaxWidth()
-
         )
         Spacer(
             modifier = Modifier
@@ -183,12 +180,13 @@ fun MovieDetailsOverviewSection(
                     MaterialTheme.spacing.medium
                 )
         )
-
         LazyHorizontalGrid(
             rows = GridCells.Fixed(2),
-            //verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large),
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large),
-            modifier = Modifier.height(100.dp)
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.height(
+                dimensionResource(id = R.dimen.movie_details_crewman_grid_height)
+            )
+                .fillMaxWidth()
         ) {
             items(
                 items = movieDetailsViewState.crew,
@@ -197,38 +195,17 @@ fun MovieDetailsOverviewSection(
                 }
             ) { crewman ->
                 CrewItem(
-                    viewState = CrewItemViewState(crewman.name, crewman.job),
-                    //modifier = Modifier.height(40.dp)
+                    viewState = CrewItemViewState(crewman.name, crewman.job)
                 )
             }
         }
-
-        /*
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
-        ) {
-            items(
-                items = movieDetailsViewState.crew,
-                key = { crewman ->
-                    crewman.id
-                }
-            ) { crewman ->
-                CrewItem(
-                    viewState = CrewItemViewState(crewman.name, crewman.job),
-                    modifier = Modifier.height(40.dp)
-                )
-            }
-        }
-        */
-
     }
 }
 
 @Composable
 fun MovieDetailsCastSection(
-    modifier: Modifier = Modifier,
-    movieDetailsViewState: MovieDetailsViewState
+    movieDetailsViewState: MovieDetailsViewState,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
@@ -261,35 +238,13 @@ fun MovieDetailsCastSection(
                         actor.character,
                         actor.imageUrl,
                     ),
-                    modifier = Modifier.size(125.dp, 209.dp)
+                    modifier = Modifier.size(
+                        dimensionResource(id = R.dimen.actor_card_width),
+                        dimensionResource(id = R.dimen.actor_card_height)
+                    )
                 )
             }
         }
-    }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun MovieDetailsHeroSectionPreview() {
-    MovieAppTheme {
-        MovieDetailsHeroSection(movieDetailsViewState = movieDetailsViewState)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MovieDetailsOverviewSectionPreview() {
-    MovieAppTheme {
-        MovieDetailsOverviewSection(movieDetailsViewState = movieDetailsViewState)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MovieDetailsCastSectionPreview() {
-    MovieAppTheme {
-        MovieDetailsCastSection(movieDetailsViewState = movieDetailsViewState)
     }
 }
 
@@ -300,4 +255,3 @@ fun MovieDetailsScreenPreview() {
         MovieDetailsScreen(movieDetailsViewState = movieDetailsViewState)
     }
 }
-

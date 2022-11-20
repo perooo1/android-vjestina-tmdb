@@ -21,10 +21,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 
 private val favoritesMapper: FavoritesMapper = FavoritesMapperImpl()
 
@@ -38,9 +38,7 @@ fun FavoritesRoute(onNavigateToMovieDetails: (Int) -> Unit) {
     val favorites by remember {
         mutableStateOf(favoritesViewState)
     }
-
     FavoritesScreen(favorites, onNavigateToMovieDetails)
-
 }
 
 @Composable
@@ -76,7 +74,10 @@ fun FavoritesScreen(
                     movieViewState = MovieViewState(movie.imageUrl, movie.isFavorite),
                     onFavouriteButtonClick = { },
                     onMovieCardClick = { onNavigateToMovieDetails(movie.id) },
-                    modifier = Modifier.size(122.dp, 179.dp)
+                    modifier = Modifier.size(
+                        dimensionResource(id = R.dimen.movie_card_width),
+                        dimensionResource(id = R.dimen.movie_card_height)
+                    )
                 )
             }
         }
@@ -110,9 +111,7 @@ fun FavoritesScreenPreview() {
     val viewState: FavoritesViewState by remember {
         mutableStateOf(favoritesViewState)
     }
-
     MovieAppTheme {
         FavoritesScreen(viewState, {})
     }
 }
-
