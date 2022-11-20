@@ -30,7 +30,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 
-
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
@@ -54,7 +53,14 @@ fun MainScreen() {
 
     }
 
-    val showBackIcon = !showBottomBar
+    val showBackIcon =
+        if (navBackStackEntry?.destination?.route == NavigationItem.FavoritesDestination.route) {
+            true
+        } else {
+            !showBottomBar
+        }
+
+    //val showBackIcon = !showBottomBar
     Scaffold(
         topBar = {
             TopBar(

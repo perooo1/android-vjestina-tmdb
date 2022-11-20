@@ -9,10 +9,12 @@ import agency.five.codebase.android.movieapp.ui.theme.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -40,7 +42,7 @@ fun MovieDetailsRoute() {
     val details by remember {
         mutableStateOf(movieDetailsViewState)
     }
-    MovieDetailsScreen(movieDetailsViewState = details)
+    MovieDetailsScreen(details)
 }
 
 @Composable
@@ -52,7 +54,7 @@ fun MovieDetailsScreen(
 
     Column(
         modifier = modifier
-        //.verticalScroll(scrollState)
+            .verticalScroll(scrollState)
     ) {
         MovieDetailsHeroSection(movieDetailsViewState = movieDetailsViewState)
         Spacer(
@@ -109,7 +111,7 @@ fun MovieDetailsHeroSection(
                 )
                 Text(
                     text = stringResource(id = R.string.user_score_text),
-                    style = Typography.h2,
+                    style = MovieHeroSupportText,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.padding(start = MaterialTheme.spacing.small)
@@ -181,6 +183,27 @@ fun MovieDetailsOverviewSection(
                     MaterialTheme.spacing.medium
                 )
         )
+
+        LazyHorizontalGrid(
+            rows = GridCells.Fixed(2),
+            //verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large),
+            modifier = Modifier.height(100.dp)
+        ) {
+            items(
+                items = movieDetailsViewState.crew,
+                key = { crewman ->
+                    crewman.id
+                }
+            ) { crewman ->
+                CrewItem(
+                    viewState = CrewItemViewState(crewman.name, crewman.job),
+                    //modifier = Modifier.height(40.dp)
+                )
+            }
+        }
+
+        /*
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
@@ -197,6 +220,8 @@ fun MovieDetailsOverviewSection(
                 )
             }
         }
+        */
+
     }
 }
 
@@ -209,6 +234,7 @@ fun MovieDetailsCastSection(
         modifier = modifier
             .padding(
                 start = MaterialTheme.spacing.medium,
+                bottom = MaterialTheme.spacing.medium
             )
     ) {
         Text(
@@ -242,6 +268,7 @@ fun MovieDetailsCastSection(
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun MovieDetailsHeroSectionPreview() {
@@ -273,3 +300,4 @@ fun MovieDetailsScreenPreview() {
         MovieDetailsScreen(movieDetailsViewState = movieDetailsViewState)
     }
 }
+

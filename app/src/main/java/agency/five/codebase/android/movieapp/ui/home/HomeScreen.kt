@@ -72,7 +72,8 @@ fun HomeScreenRoute(
         onNavigateToMovieDetails = onNavigateToMovieDetails,
         onCategoryClick = { categoryId ->
             switchSelectedCategory(categoryId)
-        }
+        },
+        modifier = Modifier.padding(start = MaterialTheme.spacing.small)
     )
 }
 
