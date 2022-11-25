@@ -15,12 +15,12 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -50,35 +50,26 @@ fun MainScreen() {
             !showBottomBar
         }
 
-    Scaffold(
-        topBar = {
-            TopBar(
-                navigationIcon = {
-                    if (showBackIcon) BackIcon(onBackClick = navController::popBackStack)
+    Scaffold(topBar = {
+        TopBar(navigationIcon = {
+            if (showBackIcon) BackIcon(onBackClick = navController::popBackStack)
+        })
+    }, bottomBar = {
+        if (showBottomBar) BottomNavigationBar(
+            destinations = listOf(
+                NavigationItem.HomeDestination,
+                NavigationItem.FavoritesDestination,
+            ), onNavigateToDestination = { destination ->
+                navController.navigate(destination.route) {
+                    this.popUpTo(destination.route) {
+                        inclusive = true
+                    }
                 }
-            )
-        },
-        bottomBar = {
-            if (showBottomBar)
-                BottomNavigationBar(
-                    destinations = listOf(
-                        NavigationItem.HomeDestination,
-                        NavigationItem.FavoritesDestination,
-                    ),
-                    onNavigateToDestination = { destination ->
-                        navController.navigate(destination.route) {
-                            this.popUpTo(destination.route) {
-                                inclusive = true
-                            }
-                        }
-                    },
-                    currentDestination = navBackStackEntry?.destination
-                )
-        }
-    ) { padding ->
+            }, currentDestination = navBackStackEntry?.destination
+        )
+    }) { padding ->
         Surface(
-            color = MaterialTheme.colors.background,
-            modifier = Modifier.fillMaxSize()
+            color = MaterialTheme.colors.background, modifier = Modifier.fillMaxSize()
         ) {
             NavHost(
                 navController = navController,
@@ -86,26 +77,22 @@ fun MainScreen() {
                 modifier = Modifier.padding(padding)
             ) {
                 composable(NavigationItem.HomeDestination.route) {
-                    HomeScreenRoute(
-                        onNavigateToMovieDetails = { movieId ->
-                            navController.navigate(
-                                MovieDetailsDestination.createNavigationRoute(
-                                    movieId
-                                )
+                    HomeScreenRoute(onNavigateToMovieDetails = { movieId ->
+                        navController.navigate(
+                            MovieDetailsDestination.createNavigationRoute(
+                                movieId
                             )
-                        }
-                    )
+                        )
+                    })
                 }
                 composable(NavigationItem.FavoritesDestination.route) {
-                    FavoritesRoute(
-                        onNavigateToMovieDetails = { movieId ->
-                            navController.navigate(
-                                MovieDetailsDestination.createNavigationRoute(
-                                    movieId
-                                )
+                    FavoritesRoute(onNavigateToMovieDetails = { movieId ->
+                        navController.navigate(
+                            MovieDetailsDestination.createNavigationRoute(
+                                movieId
                             )
-                        }
-                    )
+                        )
+                    })
                 }
                 composable(
                     route = MovieDetailsDestination.route,
@@ -124,8 +111,7 @@ private fun TopBar(
     navigationIcon: @Composable (() -> Unit)? = null,
 ) {
     if (navigationIcon != null) {
-        CenterAlignedTopAppBar(
-            navigationIcon = navigationIcon,
+        CenterAlignedTopAppBar(navigationIcon = navigationIcon,
             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Blue),
             title = {
                 Image(
@@ -134,11 +120,11 @@ private fun TopBar(
                         id = R.string.app_name
                     )
                 )
-            }
-        )
+            })
     } else {
-        CenterAlignedTopAppBar(
-            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Blue),
+        CenterAlignedTopAppBar(colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = Blue
+        ),
             title = {
                 Image(
                     painter = painterResource(id = R.drawable.tmdb_logo),
@@ -146,8 +132,7 @@ private fun TopBar(
                         id = R.string.app_name
                     )
                 )
-            }
-        )
+            })
     }
 }
 
@@ -157,8 +142,7 @@ private fun BackIcon(
     modifier: Modifier = Modifier,
 ) {
     IconButton(
-        onClick = { onBackClick() },
-        modifier = modifier
+        onClick = { onBackClick() }, modifier = modifier
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_baseline_arrow_back_ios_24),
@@ -179,39 +163,37 @@ private fun BottomNavigationBar(
     ) {
         destinations.forEach { destination ->
             val selected = destination.route == currentDestination?.route
-            BottomNavigationItem(
-                selected = selected,
+            BottomNavigationItem(selected = selected,
                 selectedContentColor = Blue,
                 unselectedContentColor = Color.Gray,
-                icon = {
-                    Column(horizontalAlignment = CenterHorizontally) {
-                        if (selected) {
-                            Icon(
-                                painter = painterResource(id = destination.selectedIconId),
-                                contentDescription = stringResource(id = R.string.home)
-                            )
-                            Text(
-                                text = stringResource(id = destination.labelId),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                style = BottomNavText
-                            )
-                        } else {
-                            Icon(
-                                painter = painterResource(id = destination.unselectedIconId),
-                                contentDescription = stringResource(id = R.string.favorites)
-                            )
-                            Text(
-                                text = stringResource(id = destination.labelId),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                style = BottomNavText
-                            )
-                        }
-                    }
+                label = {
+                    Text(
+                        text = stringResource(id = destination.labelId),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = BottomNavText
+                    )
                 },
-                onClick = { onNavigateToDestination(destination) }
-            )
+                icon = {
+                    Icon(
+                        painter = painterResource(
+                            if (selected) destination.selectedIconId
+                            else destination.unselectedIconId
+                        ), contentDescription = stringResource(id = R.string.home)
+                    )
+                },
+                onClick = { onNavigateToDestination(destination) })
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BottomNavigationBarPreview() {
+    val dest = listOf(
+        NavigationItem.HomeDestination,
+        NavigationItem.FavoritesDestination,
+    )
+
+    BottomNavigationBar(dest, {}, null)
 }

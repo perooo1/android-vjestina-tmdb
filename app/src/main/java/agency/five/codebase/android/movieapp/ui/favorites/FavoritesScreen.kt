@@ -26,6 +26,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 
+private const val FAVORITES_GRID_COLUMNS_COUNT = 3
+
 private val favoritesMapper: FavoritesMapper = FavoritesMapperImpl()
 
 val movies = MoviesMock.getMoviesList()
@@ -52,7 +54,7 @@ fun FavoritesScreen(
             .fillMaxSize()
     ) {
         LazyVerticalGrid(
-            columns = GridCells.Fixed(count = 3),
+            columns = GridCells.Fixed(FAVORITES_GRID_COLUMNS_COUNT),
             contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.medium),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium),
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
@@ -71,7 +73,10 @@ fun FavoritesScreen(
                 }
             ) { movie ->
                 MovieCard(
-                    movieViewState = MovieViewState(movie.imageUrl, movie.isFavorite),
+                    movieViewState = MovieViewState(
+                        movie.movieViewState.imageUrl,
+                        movie.movieViewState.isFavorite
+                    ),
                     onFavouriteButtonClick = { },
                     onMovieCardClick = { onNavigateToMovieDetails(movie.id) },
                     modifier = Modifier.size(

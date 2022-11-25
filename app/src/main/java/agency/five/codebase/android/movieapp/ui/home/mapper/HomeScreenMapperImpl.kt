@@ -5,6 +5,7 @@ import agency.five.codebase.android.movieapp.model.Movie
 import agency.five.codebase.android.movieapp.model.MovieCategory
 import agency.five.codebase.android.movieapp.ui.component.MovieCategoryLabelTextViewState
 import agency.five.codebase.android.movieapp.ui.component.MovieCategoryLabelViewState
+import agency.five.codebase.android.movieapp.ui.component.MovieViewState
 import agency.five.codebase.android.movieapp.ui.home.HomeMovieCategoryViewState
 import agency.five.codebase.android.movieapp.ui.home.HomeMovieViewState
 
@@ -23,7 +24,9 @@ class HomeScreenMapperImpl : HomeScreenMapper {
                 isSelected = category == selectedMovieCategory
             )
         }, movies.map { movie ->
-            HomeMovieViewState(movie.id, movie.imageUrl, movie.isFavorite)
+            HomeMovieViewState(
+                movie.id, MovieViewState(movie.imageUrl, movie.isFavorite)
+            )
         })
     }
 

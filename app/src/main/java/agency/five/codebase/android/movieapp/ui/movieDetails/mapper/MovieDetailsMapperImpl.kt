@@ -1,6 +1,8 @@
 package agency.five.codebase.android.movieapp.ui.movieDetails.mapper
 
 import agency.five.codebase.android.movieapp.model.MovieDetails
+import agency.five.codebase.android.movieapp.ui.component.ActorCardViewState
+import agency.five.codebase.android.movieapp.ui.component.CrewItemViewState
 import agency.five.codebase.android.movieapp.ui.movieDetails.ActorViewState
 import agency.five.codebase.android.movieapp.ui.movieDetails.CrewmanViewState
 import agency.five.codebase.android.movieapp.ui.movieDetails.MovieDetailsViewState
@@ -15,10 +17,16 @@ class MovieDetailsMapperImpl : MovieDetailsMapper {
             overview = movieDetails.movie.overview,
             isFavorite = movieDetails.movie.isFavorite,
             crew = movieDetails.crew.map { crewman ->
-                CrewmanViewState(crewman.id, crewman.name, crewman.job)
+                CrewmanViewState(
+                    crewman.id,
+                    CrewItemViewState(crewman.name, crewman.job)
+                )
             },
             cast = movieDetails.cast.map { actor ->
-                ActorViewState(actor.id, actor.name, actor.character, actor.imageUrl)
+                ActorViewState(
+                    actor.id,
+                    ActorCardViewState(actor.name, actor.character, actor.imageUrl)
+                )
             }
         )
     }

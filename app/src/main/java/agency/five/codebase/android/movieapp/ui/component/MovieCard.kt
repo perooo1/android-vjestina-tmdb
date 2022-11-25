@@ -61,7 +61,7 @@ fun MovieCard(
         }
     }
 }
-/*
+
 @Preview(showBackground = true)
 @Composable
 fun MovieCardPreview() {
@@ -76,4 +76,3 @@ fun MovieCardPreview() {
         onMovieCardClick = {}
     )
 }
-*/

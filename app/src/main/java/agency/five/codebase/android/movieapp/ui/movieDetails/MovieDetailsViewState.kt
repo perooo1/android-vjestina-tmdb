@@ -1,16 +1,16 @@
 package agency.five.codebase.android.movieapp.ui.movieDetails
 
+import agency.five.codebase.android.movieapp.ui.component.ActorCardViewState
+import agency.five.codebase.android.movieapp.ui.component.CrewItemViewState
+
 data class CrewmanViewState(
     val id: Int,
-    val name: String,
-    val job: String
+    val crewItemViewState: CrewItemViewState
 )
 
 data class ActorViewState(
     val id: Int,
-    val name: String,
-    val character: String,
-    val imageUrl: String?
+    val actorCardViewState: ActorCardViewState
 )
 
 data class MovieDetailsViewState(

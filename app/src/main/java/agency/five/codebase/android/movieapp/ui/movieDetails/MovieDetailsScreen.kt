@@ -30,6 +30,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
 
+private const val CREWMEN_GRID_ROWS_COUNT = 2
+
 private val movieDetailsMapper: MovieDetailsMapper = MovieDetailsMapperImpl()
 
 private val movieDetailsViewState =
@@ -45,27 +47,23 @@ fun MovieDetailsRoute() {
 
 @Composable
 fun MovieDetailsScreen(
-    movieDetailsViewState: MovieDetailsViewState,
-    modifier: Modifier = Modifier
+    movieDetailsViewState: MovieDetailsViewState, modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
     Column(
-        modifier = modifier
-            .verticalScroll(scrollState)
+        modifier = modifier.verticalScroll(scrollState)
     ) {
         MovieDetailsHeroSection(movieDetailsViewState)
         Spacer(
-            modifier = Modifier
-                .height(
-                    dimensionResource(id = R.dimen.movie_details_screen_section_spacer)
-                )
+            modifier = Modifier.height(
+                dimensionResource(id = R.dimen.movie_details_screen_section_spacer)
+            )
         )
         MovieDetailsOverviewSection(movieDetailsViewState)
         Spacer(
-            modifier = Modifier
-                .height(
-                    dimensionResource(id = R.dimen.movie_details_screen_section_spacer)
-                )
+            modifier = Modifier.height(
+                dimensionResource(id = R.dimen.movie_details_screen_section_spacer)
+            )
         )
         MovieDetailsCastSection(movieDetailsViewState)
     }
@@ -73,8 +71,7 @@ fun MovieDetailsScreen(
 
 @Composable
 fun MovieDetailsHeroSection(
-    movieDetailsViewState: MovieDetailsViewState,
-    modifier: Modifier = Modifier
+    movieDetailsViewState: MovieDetailsViewState, modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
@@ -90,8 +87,7 @@ fun MovieDetailsHeroSection(
             modifier = Modifier.fillMaxSize()
         )
         Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Bottom
+            modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom
         ) {
             Row(
                 modifier = Modifier
@@ -100,11 +96,9 @@ fun MovieDetailsHeroSection(
                         start = dimensionResource(id = R.dimen.movie_details_hero_user_score_padding)
                     ),
                 verticalAlignment = Alignment.CenterVertically,
-
-                ) {
+            ) {
                 UserScoreProgressBar(
-                    userScore = movieDetailsViewState.voteAverage,
-                    modifier = Modifier.size(
+                    userScore = movieDetailsViewState.voteAverage, modifier = Modifier.size(
                         dimensionResource(id = R.dimen.user_score_progress_bar_size)
                     )
                 )
@@ -127,31 +121,20 @@ fun MovieDetailsHeroSection(
                 )
             )
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
-            FavoriteButton(
-                modifier = Modifier
-                    .padding(
-                        start = dimensionResource(id = R.dimen.movie_details_hero_movie_title_padding),
-                        bottom = MaterialTheme.spacing.medium
-                    ),
-                isFavorite = movieDetailsViewState.isFavorite,
-                onCLick = {}
-            )
+            FavoriteButton(modifier = Modifier.padding(
+                start = dimensionResource(id = R.dimen.movie_details_hero_movie_title_padding),
+                bottom = MaterialTheme.spacing.medium
+            ), isFavorite = movieDetailsViewState.isFavorite, onCLick = {})
         }
     }
 }
 
 @Composable
 fun MovieDetailsOverviewSection(
-    movieDetailsViewState: MovieDetailsViewState,
-    modifier: Modifier = Modifier
+    movieDetailsViewState: MovieDetailsViewState, modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(
-                start = MaterialTheme.spacing.medium,
-                end = MaterialTheme.spacing.medium
-            )
+        modifier = modifier.fillMaxWidth()
     ) {
         Text(
             text = stringResource(id = R.string.overview_text),
@@ -159,43 +142,49 @@ fun MovieDetailsOverviewSection(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
+                .padding(
+                    start = MaterialTheme.spacing.medium, end = MaterialTheme.spacing.medium
+                )
                 .fillMaxWidth()
         )
         Spacer(
-            modifier = Modifier
-                .height(
-                    MaterialTheme.spacing.small
-                )
+            modifier = Modifier.height(
+                MaterialTheme.spacing.small
+            )
         )
         Text(
             text = movieDetailsViewState.overview,
             style = Typography.body1,
-            overflow = TextOverflow.Ellipsis,
             modifier = Modifier
+                .padding(
+                    start = MaterialTheme.spacing.medium, end = MaterialTheme.spacing.medium
+                )
                 .fillMaxWidth()
         )
         Spacer(
-            modifier = Modifier
-                .height(
-                    MaterialTheme.spacing.medium
-                )
+            modifier = Modifier.height(
+                MaterialTheme.spacing.medium
+            )
         )
         LazyHorizontalGrid(
-            rows = GridCells.Fixed(2),
+            rows = GridCells.Fixed(CREWMEN_GRID_ROWS_COUNT),
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.height(
-                dimensionResource(id = R.dimen.movie_details_crewman_grid_height)
+            modifier = Modifier
+                .height(
+                    dimensionResource(id = R.dimen.movie_details_crewman_grid_height)
+                )
+                .fillMaxWidth(),
+            contentPadding = PaddingValues(
+                start = MaterialTheme.spacing.medium, end = MaterialTheme.spacing.medium
             )
-                .fillMaxWidth()
         ) {
-            items(
-                items = movieDetailsViewState.crew,
-                key = { crewman ->
-                    crewman.id
-                }
-            ) { crewman ->
+            items(items = movieDetailsViewState.crew, key = { crewman ->
+                crewman.id
+            }) { crewman ->
                 CrewItem(
-                    viewState = CrewItemViewState(crewman.name, crewman.job)
+                    viewState = CrewItemViewState(
+                        crewman.crewItemViewState.name, crewman.crewItemViewState.job
+                    )
                 )
             }
         }
@@ -204,15 +193,10 @@ fun MovieDetailsOverviewSection(
 
 @Composable
 fun MovieDetailsCastSection(
-    movieDetailsViewState: MovieDetailsViewState,
-    modifier: Modifier = Modifier
+    movieDetailsViewState: MovieDetailsViewState, modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
-            .padding(
-                start = MaterialTheme.spacing.medium,
-                bottom = MaterialTheme.spacing.medium
-            )
     ) {
         Text(
             text = stringResource(id = R.string.top_billed_cast_text),
@@ -220,25 +204,27 @@ fun MovieDetailsCastSection(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
+                .padding(
+                    start = MaterialTheme.spacing.medium, bottom = MaterialTheme.spacing.medium
+                )
                 .fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
+            contentPadding = PaddingValues(
+                start = MaterialTheme.spacing.medium, end = MaterialTheme.spacing.medium
+            )
         ) {
-            items(
-                items = movieDetailsViewState.cast,
-                key = { actor ->
-                    actor.id
-                }
-            ) { actor ->
+            items(items = movieDetailsViewState.cast, key = { actor ->
+                actor.id
+            }) { actor ->
                 ActorCard(
                     actorCardViewState = ActorCardViewState(
-                        actor.name,
-                        actor.character,
-                        actor.imageUrl,
-                    ),
-                    modifier = Modifier.size(
+                        actor.actorCardViewState.name,
+                        actor.actorCardViewState.character,
+                        actor.actorCardViewState.imageUrl
+                    ), modifier = Modifier.size(
                         dimensionResource(id = R.dimen.actor_card_width),
                         dimensionResource(id = R.dimen.actor_card_height)
                     )

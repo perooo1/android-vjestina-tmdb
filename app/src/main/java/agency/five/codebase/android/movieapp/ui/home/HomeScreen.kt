@@ -18,10 +18,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -45,25 +42,41 @@ val upcoming = listOf(
     MovieCategory.UPCOMING_TODAY,
     MovieCategory.UPCOMING_THIS_WEEK
 )
-var popularCategoryViewState =
-    homeMapper.toHomeMovieCategoryViewState(popular, MovieCategory.POPULAR_STREAMING, movies)
-var nowPlayingCategoryViewState =
-    homeMapper.toHomeMovieCategoryViewState(nowPlaying, MovieCategory.NOW_PLAYING_MOVIES, movies)
-var upcomingCategoryViewState =
-    homeMapper.toHomeMovieCategoryViewState(upcoming, MovieCategory.UPCOMING_TODAY, movies)
+
+val popularCategoryViewState = mutableStateOf(
+    homeMapper.toHomeMovieCategoryViewState(
+        popular,
+        MovieCategory.POPULAR_STREAMING,
+        movies
+    )
+)
+val nowPlayingCategoryViewState = mutableStateOf(
+    homeMapper.toHomeMovieCategoryViewState(
+        nowPlaying,
+        MovieCategory.NOW_PLAYING_MOVIES,
+        movies
+    )
+)
+val upcomingCategoryViewState = mutableStateOf(
+    homeMapper.toHomeMovieCategoryViewState(
+        upcoming,
+        MovieCategory.UPCOMING_TODAY,
+        movies
+    )
+)
 
 @Composable
 fun HomeScreenRoute(
     onNavigateToMovieDetails: (Int) -> Unit
 ) {
     val popularCategory by remember {
-        mutableStateOf(popularCategoryViewState)
+        popularCategoryViewState
     }
     val nowPlayingCategory by remember {
-        mutableStateOf(nowPlayingCategoryViewState)
+        nowPlayingCategoryViewState
     }
     val upcomingCategory by remember {
-        mutableStateOf(upcomingCategoryViewState)
+        upcomingCategoryViewState
     }
     HomeScreen(
         popular = popularCategory,
@@ -72,9 +85,7 @@ fun HomeScreenRoute(
         onNavigateToMovieDetails = onNavigateToMovieDetails,
         onCategoryClick = { categoryId ->
             switchSelectedCategory(categoryId)
-        },
-        modifier = Modifier
-            .padding(start = MaterialTheme.spacing.small)
+        }
     )
 }
 
@@ -122,11 +133,18 @@ fun HomeScreenSection(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
-        HomeScreenSectionHeader(headerTitle)
+        HomeScreenSectionHeader(
+            headerTitle,
+            Modifier.padding(start = MaterialTheme.spacing.medium)
+        )
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
         LazyRow(
             horizontalArrangement =
-            Arrangement.spacedBy(MaterialTheme.spacing.spacer_favorites_screen_header_text_list)
+            Arrangement.spacedBy(MaterialTheme.spacing.spacer_favorites_screen_header_text_list),
+            contentPadding = PaddingValues(
+                start = MaterialTheme.spacing.medium,
+                end = MaterialTheme.spacing.medium
+            )
         ) {
             items(
                 items = viewState.movieCategories,
@@ -145,7 +163,11 @@ fun HomeScreenSection(
             Modifier.height(MaterialTheme.spacing.spacer_favorites_screen_header_text_list)
         )
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
+            contentPadding = PaddingValues(
+                start = MaterialTheme.spacing.medium,
+                end = MaterialTheme.spacing.medium
+            )
         ) {
             items(
                 items = viewState.movies,
@@ -154,7 +176,10 @@ fun HomeScreenSection(
                 }
             ) { movie ->
                 MovieCard(
-                    movieViewState = MovieViewState(movie.imageUrl, movie.isFavorite),
+                    movieViewState = MovieViewState(
+                        movie.movieViewState.imageUrl,
+                        movie.movieViewState.isFavorite
+                    ),
                     onFavouriteButtonClick = { /*TODO*/ },
                     onMovieCardClick = { onNavigateToMovieDetails(movie.id) },
                     modifier = Modifier.size(
@@ -190,9 +215,9 @@ fun HomeScreenSectionHeader(
 fun HomeScreenPreview() {
     MovieAppTheme {
         HomeScreen(
-            popular = popularCategoryViewState,
-            nowPlaying = nowPlayingCategoryViewState,
-            upcoming = upcomingCategoryViewState,
+            popular = popularCategoryViewState.value,
+            nowPlaying = nowPlayingCategoryViewState.value,
+            upcoming = upcomingCategoryViewState.value,
             onNavigateToMovieDetails = {},
             onCategoryClick = {}
         )
@@ -201,22 +226,28 @@ fun HomeScreenPreview() {
 
 fun switchSelectedCategory(categoryId: Int) {
     when (categoryId) {
-        0, 1, 2, 3 -> {
-            popularCategoryViewState = homeMapper.toHomeMovieCategoryViewState(
+        MovieCategory.POPULAR_STREAMING.ordinal,
+        MovieCategory.POPULAR_ON_TV.ordinal,
+        MovieCategory.POPULAR_FOR_RENT.ordinal,
+        MovieCategory.POPULAR_IN_THEATRES.ordinal
+        -> {
+            popularCategoryViewState.value = homeMapper.toHomeMovieCategoryViewState(
                 popular,
                 MovieCategory.values()[categoryId],
                 movies
             )
         }
-        4, 5 -> {
-            nowPlayingCategoryViewState = homeMapper.toHomeMovieCategoryViewState(
+        MovieCategory.NOW_PLAYING_MOVIES.ordinal,
+        MovieCategory.NOW_PLAYING_TV.ordinal
+        -> {
+            nowPlayingCategoryViewState.value = homeMapper.toHomeMovieCategoryViewState(
                 nowPlaying,
                 MovieCategory.values()[categoryId],
                 movies
             )
         }
         else -> {
-            upcomingCategoryViewState = homeMapper.toHomeMovieCategoryViewState(
+            upcomingCategoryViewState.value = homeMapper.toHomeMovieCategoryViewState(
                 upcoming,
                 MovieCategory.values()[categoryId],
                 movies
