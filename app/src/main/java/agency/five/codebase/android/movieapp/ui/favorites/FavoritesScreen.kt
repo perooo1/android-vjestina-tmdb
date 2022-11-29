@@ -16,31 +16,33 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import org.koin.androidx.compose.getViewModel
 
 private const val FAVORITES_GRID_COLUMNS_COUNT = 3
 
+/*
 private val favoritesMapper: FavoritesMapper = FavoritesMapperImpl()
 
 val movies = MoviesMock.getMoviesList()
 val favoriteMovies = movies.filter { it.isFavorite }
 
 val favoritesViewState = favoritesMapper.toFavoritesViewState(favoriteMovies)
-
+*/
 @Composable
-fun FavoritesRoute(onNavigateToMovieDetails: (Int) -> Unit) {
-    val favorites by remember {
-        mutableStateOf(favoritesViewState)
-    }
-    FavoritesScreen(favorites, onNavigateToMovieDetails)
+fun FavoritesRoute(
+    viewModel: FavoritesViewModel,
+    onNavigateToMovieDetails: (Int) -> Unit
+) {
+
+    val favoritesViewState: FavoritesViewState by viewModel.favoritesViewState.collectAsState()
+
+    FavoritesScreen(favoritesViewState, onNavigateToMovieDetails)
 }
 
 @Composable
@@ -113,10 +115,8 @@ fun FavoritesHeader() {
 @Preview(showBackground = true)
 @Composable
 fun FavoritesScreenPreview() {
-    val viewState: FavoritesViewState by remember {
-        mutableStateOf(favoritesViewState)
-    }
     MovieAppTheme {
-        FavoritesScreen(viewState, {})
+        FavoritesScreen(getViewModel(), {})
     }
 }
+

@@ -28,6 +28,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun MainScreen() {
@@ -86,13 +87,15 @@ fun MainScreen() {
                     })
                 }
                 composable(NavigationItem.FavoritesDestination.route) {
-                    FavoritesRoute(onNavigateToMovieDetails = { movieId ->
-                        navController.navigate(
-                            MovieDetailsDestination.createNavigationRoute(
-                                movieId
+                    FavoritesRoute(
+                        viewModel = getViewModel(),
+                        onNavigateToMovieDetails = { movieId ->
+                            navController.navigate(
+                                MovieDetailsDestination.createNavigationRoute(
+                                    movieId
+                                )
                             )
-                        )
-                    })
+                        })
                 }
                 composable(
                     route = MovieDetailsDestination.route,
