@@ -7,10 +7,8 @@ buildscript {
         core_ktx_version = '1.9.0'
 
         nav_version = "2.5.3"
-        navigation_compose = "androidx.navigation:navigation-compose:$nav_version"
-
         material3_version = "1.0.1"
-        material3 = "androidx.compose.material3:material3:$material3_version"
+
     }
     repositories {
         google()

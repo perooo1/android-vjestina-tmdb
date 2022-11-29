@@ -66,6 +66,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
 
-    implementation navigation_compose
-    implementation material3
+    implementation "androidx.navigation:navigation-compose:$nav_version"
+    implementation "androidx.compose.material3:material3:$material3_version"
 }
