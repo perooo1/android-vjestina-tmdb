@@ -35,10 +35,7 @@ fun ActorCard(
 ) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(
-            topStart = dimensionResource(id = R.dimen.card_corner_radius),
-            topEnd = dimensionResource(id = R.dimen.card_corner_radius)
-        ),
+        shape = RoundedCornerShape(dimensionResource(id = R.dimen.card_corner_radius)),
         elevation = dimensionResource(id = R.dimen.card_elevation)
     ) {
         Column(

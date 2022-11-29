@@ -7,6 +7,39 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
+val MovieHeroTitle = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Bold,
+    fontSize = 24.sp,
+    color = Color.White
+)
+
+val MovieHeroSupportText = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Bold,
+    fontSize = 14.sp,
+    color = Color.White
+)
+
+val HeaderText = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Bold,
+    fontSize = 20.sp,
+    color = Blue
+)
+
+val BottomNavText = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Normal,
+    fontSize = 10.sp
+)
+
+val UserScoreProgressBarText = TextStyle(
+    fontWeight = FontWeight.Bold,
+    fontSize = 15.sp,
+    color = Color.White
+)
+
 // Set of Material typography styles to start with
 val Typography = Typography(
     body1 = TextStyle(

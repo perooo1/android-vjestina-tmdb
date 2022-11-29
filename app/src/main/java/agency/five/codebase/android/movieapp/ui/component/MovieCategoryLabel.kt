@@ -36,7 +36,7 @@ fun MovieCategoryLabel(
     Column(
         modifier = modifier
             .clickable { onClick() }
-            .width(IntrinsicSize.Min),
+            .width(IntrinsicSize.Max),
     ) {
         if (labelViewState.isSelected) {
             TextSelected(labelViewState)
@@ -89,7 +89,7 @@ fun getTextSource(labelViewState: MovieCategoryLabelViewState): String {
 @Preview(showBackground = true)
 @Composable
 fun MovieCategoryLabelSelectedPreview() {
-    val textFromString = MovieCategoryLabelTextViewState.LabelTextFromString("Movies")
+    val textFromString = MovieCategoryLabelTextViewState.LabelTextFromString("For Rent")
     val viewStateString = MovieCategoryLabelViewState(1, true, textFromString)
 
     MovieCategoryLabel(labelViewState = viewStateString, onClick = {})
