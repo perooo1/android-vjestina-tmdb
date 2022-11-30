@@ -80,13 +80,15 @@ fun MainScreen() {
                 modifier = Modifier.padding(padding)
             ) {
                 composable(NavigationItem.HomeDestination.route) {
-                    HomeScreenRoute(onNavigateToMovieDetails = { movieId ->
-                        navController.navigate(
-                            MovieDetailsDestination.createNavigationRoute(
-                                movieId
+                    HomeScreenRoute(
+                        homeScreenViewModel = getViewModel(),
+                        onNavigateToMovieDetails = { movieId ->
+                            navController.navigate(
+                                MovieDetailsDestination.createNavigationRoute(
+                                    movieId
+                                )
                             )
-                        )
-                    })
+                        })
                 }
                 composable(NavigationItem.FavoritesDestination.route) {
                     FavoritesRoute(

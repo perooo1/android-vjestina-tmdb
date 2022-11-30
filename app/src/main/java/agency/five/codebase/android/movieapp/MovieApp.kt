@@ -2,6 +2,7 @@ package agency.five.codebase.android.movieapp
 
 import agency.five.codebase.android.movieapp.data.di.dataModule
 import agency.five.codebase.android.movieapp.ui.favorites.di.favoritesModule
+import agency.five.codebase.android.movieapp.ui.home.di.homeScreenModule
 import agency.five.codebase.android.movieapp.ui.movieDetails.di.movieDetailsModule
 import android.app.Application
 import android.util.Log
@@ -14,10 +15,10 @@ class MovieApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        startKoin{
+        startKoin {
             androidLogger(Level.INFO)
             androidContext(this@MovieApp)
-            modules(dataModule, favoritesModule, movieDetailsModule)
+            modules(dataModule, favoritesModule, movieDetailsModule, homeScreenModule)
         }
 
         Log.d("MovieApp", "App started")
