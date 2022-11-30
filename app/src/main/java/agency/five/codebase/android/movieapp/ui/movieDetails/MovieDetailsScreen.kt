@@ -1,10 +1,7 @@
 package agency.five.codebase.android.movieapp.ui.movieDetails
 
 import agency.five.codebase.android.movieapp.R
-import agency.five.codebase.android.movieapp.mock.MoviesMock
 import agency.five.codebase.android.movieapp.ui.component.*
-import agency.five.codebase.android.movieapp.ui.movieDetails.mapper.MovieDetailsMapper
-import agency.five.codebase.android.movieapp.ui.movieDetails.mapper.MovieDetailsMapperImpl
 import agency.five.codebase.android.movieapp.ui.theme.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -17,9 +14,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -29,20 +25,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
+import org.koin.androidx.compose.getViewModel
 
 private const val CREWMEN_GRID_ROWS_COUNT = 2
 
-private val movieDetailsMapper: MovieDetailsMapper = MovieDetailsMapperImpl()
-
-private val movieDetailsViewState =
-    movieDetailsMapper.toMovieDetailsViewState(MoviesMock.getMovieDetails())
-
 @Composable
-fun MovieDetailsRoute() {
-    val details by remember {
-        mutableStateOf(movieDetailsViewState)
-    }
-    MovieDetailsScreen(details)
+fun MovieDetailsRoute(viewModel: MovieDetailsViewModel) {
+    val movieDetailsViewState: MovieDetailsViewState by viewModel.movieDetailsViewState.collectAsState()
+    MovieDetailsScreen(movieDetailsViewState)
 }
 
 @Composable
@@ -238,6 +228,6 @@ fun MovieDetailsCastSection(
 @Composable
 fun MovieDetailsScreenPreview() {
     MovieAppTheme() {
-        MovieDetailsScreen(movieDetailsViewState = movieDetailsViewState)
+        MovieDetailsScreen(movieDetailsViewState = getViewModel())
     }
 }

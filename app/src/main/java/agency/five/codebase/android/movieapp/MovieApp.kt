@@ -2,6 +2,7 @@ package agency.five.codebase.android.movieapp
 
 import agency.five.codebase.android.movieapp.data.di.dataModule
 import agency.five.codebase.android.movieapp.ui.favorites.di.favoritesModule
+import agency.five.codebase.android.movieapp.ui.movieDetails.di.movieDetailsModule
 import android.app.Application
 import android.util.Log
 import org.koin.android.ext.koin.androidContext
@@ -16,7 +17,7 @@ class MovieApp : Application() {
         startKoin{
             androidLogger(Level.INFO)
             androidContext(this@MovieApp)
-            modules(dataModule, favoritesModule)
+            modules(dataModule, favoritesModule, movieDetailsModule)
         }
 
         Log.d("MovieApp", "App started")

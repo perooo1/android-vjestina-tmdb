@@ -1,11 +1,8 @@
 package agency.five.codebase.android.movieapp.ui.favorites
 
 import agency.five.codebase.android.movieapp.R
-import agency.five.codebase.android.movieapp.mock.MoviesMock
 import agency.five.codebase.android.movieapp.ui.component.MovieCard
 import agency.five.codebase.android.movieapp.ui.component.MovieViewState
-import agency.five.codebase.android.movieapp.ui.favorites.mapper.FavoritesMapper
-import agency.five.codebase.android.movieapp.ui.favorites.mapper.FavoritesMapperImpl
 import agency.five.codebase.android.movieapp.ui.theme.HeaderText
 import agency.five.codebase.android.movieapp.ui.theme.MovieAppTheme
 import agency.five.codebase.android.movieapp.ui.theme.spacing
@@ -16,7 +13,9 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -26,14 +25,6 @@ import org.koin.androidx.compose.getViewModel
 
 private const val FAVORITES_GRID_COLUMNS_COUNT = 3
 
-/*
-private val favoritesMapper: FavoritesMapper = FavoritesMapperImpl()
-
-val movies = MoviesMock.getMoviesList()
-val favoriteMovies = movies.filter { it.isFavorite }
-
-val favoritesViewState = favoritesMapper.toFavoritesViewState(favoriteMovies)
-*/
 @Composable
 fun FavoritesRoute(
     viewModel: FavoritesViewModel,
