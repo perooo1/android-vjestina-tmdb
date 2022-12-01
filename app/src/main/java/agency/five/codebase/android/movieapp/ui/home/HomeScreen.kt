@@ -26,7 +26,6 @@ fun HomeScreenRoute(
     homeScreenViewModel: HomeScreenViewModel,
     onNavigateToMovieDetails: (Int) -> Unit
 ) {
-
     val popularCategoryViewState:
             HomeMovieCategoryViewState by homeScreenViewModel.popularCategoryViewState.collectAsState()
     val nowPlayingCategoryViewState:
@@ -155,17 +154,3 @@ fun HomeScreenSectionHeader(
             )
     )
 }
-/*
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenPreview() {
-    MovieAppTheme {
-        HomeScreen(popular = popularCategoryViewState.value,
-            nowPlaying = nowPlayingCategoryViewState.value,
-            upcoming = upcomingCategoryViewState.value,
-            onNavigateToMovieDetails = {},
-            onCategoryClick = {})
-    }
-}
-*/
-

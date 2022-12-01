@@ -109,4 +109,3 @@ fun FavoritesScreenPreview() {
         FavoritesScreen(getViewModel(), {}, {})
     }
 }
-
