@@ -32,18 +32,20 @@ private const val CREWMEN_GRID_ROWS_COUNT = 2
 @Composable
 fun MovieDetailsRoute(viewModel: MovieDetailsViewModel) {
     val movieDetailsViewState: MovieDetailsViewState by viewModel.movieDetailsViewState.collectAsState()
-    MovieDetailsScreen(movieDetailsViewState)
+    MovieDetailsScreen(movieDetailsViewState, { viewModel.toggleFavorite(it) })
 }
 
 @Composable
 fun MovieDetailsScreen(
-    movieDetailsViewState: MovieDetailsViewState, modifier: Modifier = Modifier
+    movieDetailsViewState: MovieDetailsViewState,
+    onFavoriteButtonClick: (Int) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
     Column(
         modifier = modifier.verticalScroll(scrollState)
     ) {
-        MovieDetailsHeroSection(movieDetailsViewState)
+        MovieDetailsHeroSection(movieDetailsViewState, onFavoriteButtonClick)
         Spacer(
             modifier = Modifier.height(
                 dimensionResource(id = R.dimen.movie_details_screen_section_spacer)
@@ -61,7 +63,9 @@ fun MovieDetailsScreen(
 
 @Composable
 fun MovieDetailsHeroSection(
-    movieDetailsViewState: MovieDetailsViewState, modifier: Modifier = Modifier
+    movieDetailsViewState: MovieDetailsViewState,
+    onFavoriteButtonClick: (Int) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
@@ -114,7 +118,9 @@ fun MovieDetailsHeroSection(
             FavoriteButton(modifier = Modifier.padding(
                 start = dimensionResource(id = R.dimen.movie_details_hero_movie_title_padding),
                 bottom = MaterialTheme.spacing.medium
-            ), isFavorite = movieDetailsViewState.isFavorite, onCLick = {})
+            ),
+                isFavorite = movieDetailsViewState.isFavorite,
+                onCLick = { onFavoriteButtonClick(movieDetailsViewState.id) })
         }
     }
 }
@@ -228,6 +234,6 @@ fun MovieDetailsCastSection(
 @Composable
 fun MovieDetailsScreenPreview() {
     MovieAppTheme() {
-        MovieDetailsScreen(movieDetailsViewState = getViewModel())
+        MovieDetailsScreen(movieDetailsViewState = getViewModel(), {})
     }
 }

@@ -38,6 +38,9 @@ fun HomeScreenRoute(
         nowPlaying = nowPlayingCategoryViewState,
         upcoming = upcomingCategoryViewState,
         onNavigateToMovieDetails = onNavigateToMovieDetails,
+        onFavoriteButtonClick = { movieId ->
+            homeScreenViewModel.toggleFavorite(movieId)
+        },
         onCategoryClick = { categoryId ->
             homeScreenViewModel.switchSelectedCategory(categoryId)
         })
@@ -49,6 +52,7 @@ fun HomeScreen(
     nowPlaying: HomeMovieCategoryViewState,
     upcoming: HomeMovieCategoryViewState,
     onNavigateToMovieDetails: (Int) -> Unit,
+    onFavoriteButtonClick: (Int) -> Unit,
     onCategoryClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -60,18 +64,21 @@ fun HomeScreen(
             viewState = popular,
             headerTitle = stringResource(id = R.string.whats_popular),
             onNavigateToMovieDetails = onNavigateToMovieDetails,
+            onFavoriteButtonClick = onFavoriteButtonClick,
             onCategoryClick = onCategoryClick
         )
         HomeScreenSection(
             viewState = nowPlaying,
             headerTitle = stringResource(id = R.string.now_playing),
             onNavigateToMovieDetails = onNavigateToMovieDetails,
+            onFavoriteButtonClick = onFavoriteButtonClick,
             onCategoryClick = onCategoryClick
         )
         HomeScreenSection(
             viewState = upcoming,
             headerTitle = stringResource(id = R.string.upcoming),
             onNavigateToMovieDetails = onNavigateToMovieDetails,
+            onFavoriteButtonClick = onFavoriteButtonClick,
             onCategoryClick = onCategoryClick
         )
     }
@@ -82,6 +89,7 @@ fun HomeScreenSection(
     viewState: HomeMovieCategoryViewState,
     headerTitle: String,
     onNavigateToMovieDetails: (Int) -> Unit,
+    onFavoriteButtonClick: (Int) -> Unit,
     onCategoryClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -119,7 +127,7 @@ fun HomeScreenSection(
                     movieViewState = MovieViewState(
                         movie.movieViewState.imageUrl, movie.movieViewState.isFavorite
                     ),
-                    onFavouriteButtonClick = { /*TODO*/ },
+                    onFavouriteButtonClick = { onFavoriteButtonClick(movie.id) },
                     onMovieCardClick = { onNavigateToMovieDetails(movie.id) },
                     modifier = Modifier.size(
                         dimensionResource(id = R.dimen.movie_card_width),

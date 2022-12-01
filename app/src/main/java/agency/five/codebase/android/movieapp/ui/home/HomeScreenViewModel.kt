@@ -88,6 +88,12 @@ class HomeScreenViewModel(
         }
     }
 
+    fun toggleFavorite(movieId: Int) {
+        viewModelScope.launch {
+            movieRepository.toggleFavorite(movieId)
+        }
+    }
+
     fun switchSelectedCategory(categoryId: Int) {
         when (categoryId) {
             MovieCategory.POPULAR_STREAMING.ordinal,

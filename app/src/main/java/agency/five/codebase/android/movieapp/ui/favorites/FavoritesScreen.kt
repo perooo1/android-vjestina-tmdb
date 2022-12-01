@@ -30,15 +30,14 @@ fun FavoritesRoute(
     viewModel: FavoritesViewModel,
     onNavigateToMovieDetails: (Int) -> Unit
 ) {
-
     val favoritesViewState: FavoritesViewState by viewModel.favoritesViewState.collectAsState()
-
-    FavoritesScreen(favoritesViewState, onNavigateToMovieDetails)
+    FavoritesScreen(favoritesViewState, { viewModel.toggleFavorite(it) }, onNavigateToMovieDetails)
 }
 
 @Composable
 fun FavoritesScreen(
     favoritesViewState: FavoritesViewState,
+    onFavoriteButtonClick: (Int) -> Unit,
     onNavigateToMovieDetails: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -70,7 +69,7 @@ fun FavoritesScreen(
                         movie.movieViewState.imageUrl,
                         movie.movieViewState.isFavorite
                     ),
-                    onFavouriteButtonClick = { },
+                    onFavouriteButtonClick = { onFavoriteButtonClick(movie.id) },
                     onMovieCardClick = { onNavigateToMovieDetails(movie.id) },
                     modifier = Modifier.size(
                         dimensionResource(id = R.dimen.movie_card_width),
@@ -107,7 +106,7 @@ fun FavoritesHeader() {
 @Composable
 fun FavoritesScreenPreview() {
     MovieAppTheme {
-        FavoritesScreen(getViewModel(), {})
+        FavoritesScreen(getViewModel(), {}, {})
     }
 }
 

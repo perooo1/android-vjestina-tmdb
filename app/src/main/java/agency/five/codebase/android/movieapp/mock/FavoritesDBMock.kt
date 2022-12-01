@@ -12,5 +12,4 @@ object FavoritesDBMock {
 
     fun insert(movieId: Int) = _favoriteIds.update { it.plus(movieId) }
     fun delete(movieId: Int) = _favoriteIds.update { it.minus(movieId) }
-
 }

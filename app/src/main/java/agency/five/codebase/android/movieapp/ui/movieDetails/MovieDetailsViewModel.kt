@@ -33,4 +33,10 @@ class MovieDetailsViewModel(
             }
         }
     }
+
+    fun toggleFavorite(movieId: Int){
+        viewModelScope.launch {
+            movieRepository.toggleFavorite(movieId)
+        }
+    }
 }
