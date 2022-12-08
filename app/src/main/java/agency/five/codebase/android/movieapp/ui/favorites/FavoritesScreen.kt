@@ -31,7 +31,7 @@ fun FavoritesRoute(
     onNavigateToMovieDetails: (Int) -> Unit
 ) {
     val favoritesViewState: FavoritesViewState by viewModel.favoritesViewState.collectAsState()
-    FavoritesScreen(favoritesViewState, { viewModel.toggleFavorite(it) }, onNavigateToMovieDetails)
+    FavoritesScreen(favoritesViewState, viewModel::toggleFavorite, onNavigateToMovieDetails)
 }
 
 @Composable

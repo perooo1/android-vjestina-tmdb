@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.update
 
 object FavoritesDBMock {
 
-    private val _favoriteIds = MutableStateFlow(setOf<Int>())
-    val favoriteIds: StateFlow<Set<Int>> = _favoriteIds.asStateFlow()
+    private val ids = MutableStateFlow(setOf<Int>())
+    val favoriteIds: StateFlow<Set<Int>> = ids.asStateFlow()
 
-    fun insert(movieId: Int) = _favoriteIds.update { it.plus(movieId) }
-    fun delete(movieId: Int) = _favoriteIds.update { it.minus(movieId) }
+    fun insert(movieId: Int) = ids.update { it.plus(movieId) }
+    fun delete(movieId: Int) = ids.update { it.minus(movieId) }
 }

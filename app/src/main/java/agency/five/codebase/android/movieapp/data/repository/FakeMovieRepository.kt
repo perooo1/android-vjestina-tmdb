@@ -29,15 +29,10 @@ class FakeMovieRepository(private val ioDispatcher: CoroutineDispatcher) : Movie
 
     override fun movieDetails(movieId: Int): Flow<MovieDetails> =
         FavoritesDBMock.favoriteIds.mapLatest { favoriteIds ->
-
             val details = getMovieDetails(movieId)
-            val movie = findMatchingMovie(movieId)
+            val movie = details.movie.copy(isFavorite = favoriteIds.contains(movieId))
 
-            val detailsToEmit = details.copy(
-                movie = movie
-                    .copy(isFavorite = favoriteIds.contains(movieId))
-            )
-            detailsToEmit
+            details.copy(movie = movie)
         }.flowOn(ioDispatcher)
 
     override fun favoriteMovies(): Flow<List<Movie>> = movies.map {

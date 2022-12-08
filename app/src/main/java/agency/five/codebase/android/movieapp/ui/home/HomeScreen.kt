@@ -5,6 +5,7 @@ import agency.five.codebase.android.movieapp.ui.component.MovieCard
 import agency.five.codebase.android.movieapp.ui.component.MovieCategoryLabel
 import agency.five.codebase.android.movieapp.ui.component.MovieViewState
 import agency.five.codebase.android.movieapp.ui.theme.HeaderText
+import agency.five.codebase.android.movieapp.ui.theme.MovieAppTheme
 import agency.five.codebase.android.movieapp.ui.theme.spacing
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -20,6 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun HomeScreenRoute(
@@ -33,16 +36,14 @@ fun HomeScreenRoute(
     val upcomingCategoryViewState:
             HomeMovieCategoryViewState by homeScreenViewModel.upcomingCategoryViewState.collectAsState()
 
-    HomeScreen(popular = popularCategoryViewState,
+    HomeScreen(
+        popular = popularCategoryViewState,
         nowPlaying = nowPlayingCategoryViewState,
         upcoming = upcomingCategoryViewState,
         onNavigateToMovieDetails = onNavigateToMovieDetails,
-        onFavoriteButtonClick = { movieId ->
-            homeScreenViewModel.toggleFavorite(movieId)
-        },
-        onCategoryClick = { categoryId ->
-            homeScreenViewModel.switchSelectedCategory(categoryId)
-        })
+        onFavoriteButtonClick = homeScreenViewModel::toggleFavorite,
+        onCategoryClick = homeScreenViewModel::switchSelectedCategory
+    )
 }
 
 @Composable
@@ -153,4 +154,20 @@ fun HomeScreenSectionHeader(
                 top = MaterialTheme.spacing.large
             )
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HomeScreenPreview() {
+    MovieAppTheme {
+        val viewModel: HomeScreenViewModel = getViewModel()
+        HomeScreen(
+            popular = viewModel.popularCategoryViewState.collectAsState().value,
+            nowPlaying = viewModel.nowPlayingCategoryViewState.collectAsState().value,
+            upcoming = viewModel.upcomingCategoryViewState.collectAsState().value,
+            onNavigateToMovieDetails = {},
+            onCategoryClick = {},
+            onFavoriteButtonClick = {}
+        )
+    }
 }

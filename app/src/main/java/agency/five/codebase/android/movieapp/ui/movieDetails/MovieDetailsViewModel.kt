@@ -12,6 +12,7 @@ class MovieDetailsViewModel(
     private val movieRepository: MovieRepository,
     private val movieDetailsMapper: MovieDetailsMapper
 ) : ViewModel() {
+
     private val initialViewState = MovieDetailsViewState(
         id = 1,
         imageUrl = null,
@@ -23,18 +24,15 @@ class MovieDetailsViewModel(
         cast = emptyList()
     )
 
-    private val _movieDetailsViewState = MutableStateFlow(initialViewState)
-    val movieDetailsViewState = _movieDetailsViewState.asStateFlow()
+    val movieDetailsViewState = movieRepository.movieDetails(movieId).map { details ->
+        movieDetailsMapper.toMovieDetailsViewState(details)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000L),
+        initialValue = initialViewState
+    )
 
-    init {
-        viewModelScope.launch {
-            movieRepository.movieDetails(movieId).collect { details ->
-                _movieDetailsViewState.value = movieDetailsMapper.toMovieDetailsViewState(details)
-            }
-        }
-    }
-
-    fun toggleFavorite(movieId: Int){
+    fun toggleFavorite(movieId: Int) {
         viewModelScope.launch {
             movieRepository.toggleFavorite(movieId)
         }

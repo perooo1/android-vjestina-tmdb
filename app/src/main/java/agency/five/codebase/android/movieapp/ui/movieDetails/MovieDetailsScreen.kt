@@ -32,7 +32,7 @@ private const val CREWMEN_GRID_ROWS_COUNT = 2
 @Composable
 fun MovieDetailsRoute(viewModel: MovieDetailsViewModel) {
     val movieDetailsViewState: MovieDetailsViewState by viewModel.movieDetailsViewState.collectAsState()
-    MovieDetailsScreen(movieDetailsViewState, { viewModel.toggleFavorite(it) })
+    MovieDetailsScreen(movieDetailsViewState, viewModel::toggleFavorite)
 }
 
 @Composable
