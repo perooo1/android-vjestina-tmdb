@@ -4,6 +4,7 @@ import agency.five.codebase.android.movieapp.data.network.model.ApiMovieDetails
 import agency.five.codebase.android.movieapp.data.network.model.response.MovieCreditsResponse
 import agency.five.codebase.android.movieapp.data.network.model.response.MovieResponse
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 
@@ -20,7 +21,7 @@ class MovieServiceImpl(private val client: HttpClient) : MovieService {
                 path("/movie/popular")
                 parameter("api_key", API_KEY)
             }
-        }
+        }.body()
 
     override suspend fun fetchNowPlayingMovies(): MovieResponse =
         client.get {
@@ -30,7 +31,7 @@ class MovieServiceImpl(private val client: HttpClient) : MovieService {
                 path("/movie/now_playing")
                 parameter("api_key", API_KEY)
             }
-        }
+        }.body()
 
 override suspend fun fetchUpcomingMovies(): MovieResponse =
     client.get {
@@ -40,7 +41,7 @@ override suspend fun fetchUpcomingMovies(): MovieResponse =
             path("/movie/upcoming")
             parameter("api_key", API_KEY)
         }
-    }
+    }.body()
 
 override suspend fun fetchTopRatedMovies(): MovieResponse =
     client.get {
@@ -50,7 +51,7 @@ override suspend fun fetchTopRatedMovies(): MovieResponse =
             path("/movie/top_rated")
             parameter("api_key", API_KEY)
         }
-    }
+    }.body()
 
 override suspend fun fetchMovieDetails(movieId: Int): ApiMovieDetails =
     client.get {
@@ -60,7 +61,7 @@ override suspend fun fetchMovieDetails(movieId: Int): ApiMovieDetails =
             path("/movie/$movieId")
             parameter("api_key", API_KEY)
         }
-    }
+    }.body()
 
 override suspend fun fetchMovieCredits(movieId: Int): MovieCreditsResponse =
     client.get {
@@ -70,5 +71,5 @@ override suspend fun fetchMovieCredits(movieId: Int): MovieCreditsResponse =
             path("/movie/$movieId/credits")
             parameter("api_key", API_KEY)
         }
-    }
+    }.body()
 }
