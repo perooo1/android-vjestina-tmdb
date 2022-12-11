@@ -7,6 +7,7 @@ import agency.five.codebase.android.movieapp.navigation.NavigationItem
 import agency.five.codebase.android.movieapp.ui.favorites.FavoritesRoute
 import agency.five.codebase.android.movieapp.ui.home.HomeScreenRoute
 import agency.five.codebase.android.movieapp.ui.movieDetails.MovieDetailsRoute
+import agency.five.codebase.android.movieapp.ui.movieDetails.MovieDetailsViewModel
 import agency.five.codebase.android.movieapp.ui.theme.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -28,6 +29,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import org.koin.androidx.compose.getViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun MainScreen() {
@@ -77,28 +80,35 @@ fun MainScreen() {
                 modifier = Modifier.padding(padding)
             ) {
                 composable(NavigationItem.HomeDestination.route) {
-                    HomeScreenRoute(onNavigateToMovieDetails = { movieId ->
-                        navController.navigate(
-                            MovieDetailsDestination.createNavigationRoute(
-                                movieId
+                    HomeScreenRoute(
+                        homeScreenViewModel = getViewModel(),
+                        onNavigateToMovieDetails = { movieId ->
+                            navController.navigate(
+                                MovieDetailsDestination.createNavigationRoute(
+                                    movieId
+                                )
                             )
-                        )
-                    })
+                        })
                 }
                 composable(NavigationItem.FavoritesDestination.route) {
-                    FavoritesRoute(onNavigateToMovieDetails = { movieId ->
-                        navController.navigate(
-                            MovieDetailsDestination.createNavigationRoute(
-                                movieId
+                    FavoritesRoute(
+                        viewModel = getViewModel(),
+                        onNavigateToMovieDetails = { movieId ->
+                            navController.navigate(
+                                MovieDetailsDestination.createNavigationRoute(
+                                    movieId
+                                )
                             )
-                        )
-                    })
+                        })
                 }
                 composable(
                     route = MovieDetailsDestination.route,
                     arguments = listOf(navArgument(MOVIE_ID_KEY) { type = NavType.IntType }),
                 ) {
-                    MovieDetailsRoute()
+                    val movieId = it.arguments?.getInt(MOVIE_ID_KEY)
+                    val movieDetailsViewModel =
+                        getViewModel<MovieDetailsViewModel>(parameters = { parametersOf(movieId) })
+                    MovieDetailsRoute(movieDetailsViewModel)
                 }
             }
         }
