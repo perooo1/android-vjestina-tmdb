@@ -15,8 +15,6 @@ data class ApiMovie(                //from GET /movie/{movie_id} endpoint docume
     val overview: String,
     @SerialName("poster_path")
     val posterPath: String?,
-    @SerialName("genre_ids")
-    val genreIds: List<Int>,
     @SerialName("vote_average")
     val voteAverage: Double,
     @SerialName("release_date")

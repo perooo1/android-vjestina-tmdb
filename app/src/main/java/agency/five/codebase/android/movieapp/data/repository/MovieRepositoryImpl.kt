@@ -1,5 +1,6 @@
 package agency.five.codebase.android.movieapp.data.repository
 
+import agency.five.codebase.android.movieapp.data.database.DbFavoriteMovie
 import agency.five.codebase.android.movieapp.data.database.FavoriteMovieDao
 import agency.five.codebase.android.movieapp.data.network.MovieService
 import agency.five.codebase.android.movieapp.data.network.model.ApiMovie
@@ -63,7 +64,6 @@ class MovieRepositoryImpl(
         replay = 1
     )
 
-
     override fun movies(movieCategory: MovieCategory): Flow<List<Movie>> =
         moviesByCategory[movieCategory]!!
 
@@ -71,20 +71,40 @@ class MovieRepositoryImpl(
         emit(movieService.fetchMovieDetails(movieId) to movieService.fetchMovieCredits(movieId))
     }.flatMapLatest { (apiMovieDetails, apiMovieCredits) ->
         movieDao.favorites().map { favoriteMovies ->
-        TODO()
+            apiMovieDetails.toMovieDetails(
+                isFavorite = favoriteMovies.any { it.id == apiMovieDetails.movie.id },
+                crew = apiMovieCredits.crew.map { it.toCrewman() },
+                cast = apiMovieCredits.cast.map { it.toActor() }
+            )
+/*
+            apiMovieDetails.toMovieDetails(
+                movie = favoriteMovies.map { film ->
+                    Movie(id = film.id, title = "", overview = "", imageUrl = film.posterUrl, isFavorite = favoriteMovies.)
+                }
+                ,
+                crew = apiMovieCredits.crew.map {
+                    it.toCrewman()
+                },
+                cast = apiMovieCredits.cast.map {
+                    it.toActor()
+                })
+*/
 
         }
-
     }.flowOn(bgDispatcher)
 
     override fun favoriteMovies(): Flow<List<Movie>> = favorites
 
-    override suspend fun addMovieToFavorites(movieId: Int) {
-        TODO("Not yet implemented")
+    override suspend fun addMovieToFavorites(movieId: Int, posterUrl: String) {
+        movieDao.insertMovie(DbFavoriteMovie(movieId, posterUrl))
+    }
+
+    private suspend fun findMovie(movieId: Int): Movie {
+        TODO()
     }
 
     override suspend fun removeMovieFromFavorites(movieId: Int) {
-        TODO("Not yet implemented")
+        movieDao.deleteMovie(movieId)
     }
 
     override suspend fun toggleFavorite(movieId: Int) {
