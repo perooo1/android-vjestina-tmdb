@@ -14,12 +14,12 @@ data class ApiCast(                     //from GET /movie/{movie_id}/credits end
     val character: String,
     @SerialName("profile_path")
     val imageUrl: String?
-){
+) {
     fun toActor() = Actor(
         id = id,
         name = name,
         character = character,
-         imageUrl = imageUrl
+        imageUrl = imageUrl
     )
 }
 

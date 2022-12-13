@@ -17,6 +17,6 @@ data class ApiCrew(         //from GET /movie/{movie_id}/credits endpoint docume
     fun toCrewman() = Crewman(
         id = id,
         name = name,
-         job = job
+        job = job
     )
 }
