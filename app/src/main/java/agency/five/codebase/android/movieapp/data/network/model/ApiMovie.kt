@@ -15,10 +15,12 @@ data class ApiMovie(                //from GET /movie/{movie_id} endpoint docume
     val overview: String,
     @SerialName("poster_path")
     val posterPath: String?,
-    @SerialName("vote_average")
+    /*
+    @SerialName("vote_average")         //double, already in ApiMovieDetails
     val voteAverage: Double,
     @SerialName("release_date")
     val releaseDate: String? = null
+    */
 ) {
     fun toMovie(isFavorite: Boolean) = Movie(
         id = id,

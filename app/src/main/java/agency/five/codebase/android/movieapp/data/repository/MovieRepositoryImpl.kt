@@ -11,9 +11,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 
-
 private const val STOP_TIMEOUT_MILIS = 1000L
-
 
 class MovieRepositoryImpl(
     private val movieService: MovieService,
@@ -100,7 +98,16 @@ class MovieRepositoryImpl(
     }
 
     private suspend fun findMovie(movieId: Int): Movie {
-        TODO()
+        /*
+        for (category in MovieCategory.values()){
+            moviesByCategory[category]?.collect{ movies ->
+                movies.filter { movie ->
+                    movie.id == movieId
+                }
+            }
+        }
+        */
+        return Movie(1, "", "", "", false)      //placeholder
     }
 
     override suspend fun removeMovieFromFavorites(movieId: Int) {
@@ -108,6 +115,16 @@ class MovieRepositoryImpl(
     }
 
     override suspend fun toggleFavorite(movieId: Int) {
-        TODO("Not yet implemented")
+        val movie = findMovie(movieId)
+        val favoriteMovies = favorites.first()
+
+        if (favoriteMovies.contains(movie)) {
+            removeMovieFromFavorites(movieId)
+        } else {
+            movie.imageUrl?.let { addMovieToFavorites(movieId, it) }
+        }
+
+        //if(movie?.isFavorite == true)
+
     }
 }

@@ -1,5 +1,6 @@
 package agency.five.codebase.android.movieapp.data.di
 
+import agency.five.codebase.android.movieapp.data.database.FavoriteMovieDao
 import agency.five.codebase.android.movieapp.data.database.MovieAppDatabase
 import agency.five.codebase.android.movieapp.data.repository.MovieRepository
 import agency.five.codebase.android.movieapp.data.repository.MovieRepositoryImpl
@@ -13,7 +14,7 @@ private const val APP_DATABASE_NAME = "app_database.db"
 val dataModule = module {
     single<MovieRepository>{
         //FakeMovieRepository(ioDispatcher = Dispatchers.IO)
-        MovieRepositoryImpl(get(),get(),get())
+        MovieRepositoryImpl(get(),get(),Dispatchers.IO)
     }
 }
 
@@ -25,4 +26,11 @@ val databaseModule = module {
             APP_DATABASE_NAME
         ).build()
     }
+
+    fun provideFavoriteMovieDao(db: MovieAppDatabase):FavoriteMovieDao = db.getMovieDao()
+    single{
+        provideFavoriteMovieDao(get())
+    }
 }
+
+

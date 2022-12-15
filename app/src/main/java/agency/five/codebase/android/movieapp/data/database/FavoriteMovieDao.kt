@@ -18,6 +18,6 @@ interface FavoriteMovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMovie(movie: DbFavoriteMovie)
 
-    @Query("DELETE FROM favoritemovies WHERE id=:id")
+    @Query("DELETE FROM favoriteMovies WHERE id=:id")
     fun deleteMovie(id: Int)
 }
