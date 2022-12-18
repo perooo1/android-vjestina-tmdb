@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
+private const val STOP_TIMEOUT_MILIS = 5000L
+
 class FavoritesViewModel(
     private val movieRepository: MovieRepository, private val favoritesMapper: FavoritesMapper
 ) : ViewModel() {
@@ -16,7 +18,7 @@ class FavoritesViewModel(
             favoritesMapper.toFavoritesViewState(movies)
         }.stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000L),
+            started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILIS),
             initialValue = FavoritesViewState(
                 emptyList()
             )

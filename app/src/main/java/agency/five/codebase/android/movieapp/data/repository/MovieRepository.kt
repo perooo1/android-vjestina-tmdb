@@ -9,7 +9,7 @@ interface MovieRepository {
     fun movies(movieCategory: MovieCategory): Flow<List<Movie>>
     fun movieDetails(movieId: Int): Flow<MovieDetails>
     fun favoriteMovies(): Flow<List<Movie>>
-    suspend fun addMovieToFavorites(movieId: Int, posterUrl: String)
+    suspend fun addMovieToFavorites(movieId: Int)
     suspend fun removeMovieFromFavorites(movieId: Int)
     suspend fun toggleFavorite(movieId: Int)
 }

@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
+private const val STOP_TIMEOUT_MILIS = 5000L
+
 class HomeScreenViewModel(
     private val movieRepository: MovieRepository,
     private val homeMapper: HomeScreenMapper
@@ -39,15 +41,9 @@ class HomeScreenViewModel(
         movieRepository.movies(category).map { movies ->
             homeMapper.toHomeMovieCategoryViewState(popular, category, movies)
         }
-        /*
-        movieRepository.popularMovies(MovieCategory.POPULAR_STREAMING).map { movies ->
-            homeMapper.toHomeMovieCategoryViewState(popular, category, movies)
-        }
-        */
-
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000L),
+        started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILIS),
         initialValue = initialHomeMovieCategoryViewState
     )
 
@@ -55,14 +51,9 @@ class HomeScreenViewModel(
         movieRepository.movies(category).map { movies ->
             homeMapper.toHomeMovieCategoryViewState(nowPlaying, category, movies)
         }
-        /*
-        movieRepository.nowPlayingMovies(MovieCategory.NOW_PLAYING_TV).map { movies ->
-            homeMapper.toHomeMovieCategoryViewState(nowPlaying, nowPlayingSelected.value, movies)
-        }
-        */
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000L),
+        started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILIS),
         initialValue = initialHomeMovieCategoryViewState
     )
 
@@ -70,15 +61,9 @@ class HomeScreenViewModel(
         movieRepository.movies(category).map { movies ->
             homeMapper.toHomeMovieCategoryViewState(upcoming, category, movies)
         }
-        /*
-        movieRepository.upcomingMovies(MovieCategory.UPCOMING_TODAY).map { movies ->
-            homeMapper.toHomeMovieCategoryViewState(upcoming, upcomingSelected.value, movies)
-        }
-        */
-
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000L),
+        started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILIS),
         initialValue = initialHomeMovieCategoryViewState
     )
 

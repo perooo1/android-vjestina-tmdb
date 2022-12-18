@@ -13,7 +13,6 @@ private const val APP_DATABASE_NAME = "app_database.db"
 
 val dataModule = module {
     single<MovieRepository>{
-        //FakeMovieRepository(ioDispatcher = Dispatchers.IO)
         MovieRepositoryImpl(get(),get(),Dispatchers.IO)
     }
 }

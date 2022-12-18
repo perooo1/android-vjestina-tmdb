@@ -1,5 +1,6 @@
 package agency.five.codebase.android.movieapp.data.network.model
 
+import agency.five.codebase.android.movieapp.data.network.BASE_IMAGE_URL
 import agency.five.codebase.android.movieapp.model.Actor
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -19,7 +20,7 @@ data class ApiCast(                     //from GET /movie/{movie_id}/credits end
         id = id,
         name = name,
         character = character,
-        imageUrl = imageUrl
+        imageUrl = "$BASE_IMAGE_URL/$imageUrl",
     )
 }
 

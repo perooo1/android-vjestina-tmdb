@@ -12,7 +12,6 @@ data class ApiCrew(         //from GET /movie/{movie_id}/credits endpoint docume
     val name: String,
     @SerialName("job")
     val job: String
-
 ) {
     fun toCrewman() = Crewman(
         id = id,

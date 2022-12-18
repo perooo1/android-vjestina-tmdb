@@ -3,13 +3,14 @@ package agency.five.codebase.android.movieapp.data.repository
 import agency.five.codebase.android.movieapp.data.database.DbFavoriteMovie
 import agency.five.codebase.android.movieapp.data.database.FavoriteMovieDao
 import agency.five.codebase.android.movieapp.data.network.MovieService
-import agency.five.codebase.android.movieapp.data.network.model.ApiMovie
 import agency.five.codebase.android.movieapp.model.Movie
 import agency.five.codebase.android.movieapp.model.MovieCategory
 import agency.five.codebase.android.movieapp.model.MovieDetails
+import android.util.Log
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.runBlocking
 
 private const val STOP_TIMEOUT_MILIS = 1000L
 
@@ -20,9 +21,9 @@ class MovieRepositoryImpl(
 ) : MovieRepository {
 
     private val moviesByCategory: Map<MovieCategory, Flow<List<Movie>>> =
-        MovieCategory.values().associateWith { cateogry ->
+        MovieCategory.values().associateWith { category ->
             flow {
-                val movieResponse = when (cateogry) {
+                val movieResponse = when (category) {
                     MovieCategory.POPULAR_STREAMING -> movieService.fetchPopularMovies()
                     MovieCategory.POPULAR_ON_TV -> movieService.fetchUpcomingMovies()
                     MovieCategory.POPULAR_FOR_RENT -> movieService.fetchNowPlayingMovies()
@@ -70,61 +71,48 @@ class MovieRepositoryImpl(
     }.flatMapLatest { (apiMovieDetails, apiMovieCredits) ->
         movieDao.favorites().map { favoriteMovies ->
             apiMovieDetails.toMovieDetails(
-                isFavorite = favoriteMovies.any { it.id == apiMovieDetails.movie.id },
+                isFavorite = favoriteMovies.any { it.id == apiMovieDetails.id },
                 crew = apiMovieCredits.crew.map { it.toCrewman() },
                 cast = apiMovieCredits.cast.map { it.toActor() }
             )
-/*
-            apiMovieDetails.toMovieDetails(
-                movie = favoriteMovies.map { film ->
-                    Movie(id = film.id, title = "", overview = "", imageUrl = film.posterUrl, isFavorite = favoriteMovies.)
-                }
-                ,
-                crew = apiMovieCredits.crew.map {
-                    it.toCrewman()
-                },
-                cast = apiMovieCredits.cast.map {
-                    it.toActor()
-                })
-*/
-
         }
     }.flowOn(bgDispatcher)
 
     override fun favoriteMovies(): Flow<List<Movie>> = favorites
 
-    override suspend fun addMovieToFavorites(movieId: Int, posterUrl: String) {
-        movieDao.insertMovie(DbFavoriteMovie(movieId, posterUrl))
+    override suspend fun addMovieToFavorites(movieId: Int) {
+        val movie = findMovie(movieId)
+        Log.i("FIND", "ADD FAVS: ${movie.title}")
+
+        movie.imageUrl?.let { DbFavoriteMovie(movie.id, it) }?.let { movieDao.insertMovie(it) }
     }
 
     private suspend fun findMovie(movieId: Int): Movie {
-        /*
-        for (category in MovieCategory.values()){
-            moviesByCategory[category]?.collect{ movies ->
-                movies.filter { movie ->
-                    movie.id == movieId
+        lateinit var movie: Movie
+        moviesByCategory.values.forEach { value ->
+            val movies = value.first()
+            movies.forEach {
+                if (it.id == movieId) {
+                    movie = it
                 }
             }
         }
-        */
-        return Movie(1, "", "", "", false)      //placeholder
+        return movie
     }
 
-    override suspend fun removeMovieFromFavorites(movieId: Int) {
-        movieDao.deleteMovie(movieId)
-    }
+    override suspend fun removeMovieFromFavorites(movieId: Int) = movieDao.deleteMovie(movieId)
 
     override suspend fun toggleFavorite(movieId: Int) {
-        val movie = findMovie(movieId)
-        val favoriteMovies = favorites.first()
-
-        if (favoriteMovies.contains(movie)) {
-            removeMovieFromFavorites(movieId)
-        } else {
-            movie.imageUrl?.let { addMovieToFavorites(movieId, it) }
+        runBlocking(bgDispatcher) {
+            val favoriteMovies = favorites.first()
+            val favoriteMovie = favoriteMovies.filter {
+                it.id == movieId
+            }
+            if (favoriteMovie.isNotEmpty()) {
+                removeMovieFromFavorites(movieId)
+            } else {
+                addMovieToFavorites(movieId)
+            }
         }
-
-        //if(movie?.isFavorite == true)
-
     }
 }
