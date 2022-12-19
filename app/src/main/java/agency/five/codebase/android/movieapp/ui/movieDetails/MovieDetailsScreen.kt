@@ -175,7 +175,7 @@ fun MovieDetailsOverviewSection(
             )
         ) {
             items(items = movieDetailsViewState.crew, key = { crewman ->
-                crewman.id
+                crewman.hashCode()
             }) { crewman ->
                 CrewItem(
                     viewState = CrewItemViewState(

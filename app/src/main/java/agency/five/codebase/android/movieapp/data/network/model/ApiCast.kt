@@ -6,7 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ApiCast(                     //from GET /movie/{movie_id}/credits endpoint documentation
+data class ApiCast(
     @SerialName("id")
     val id: Int,
     @SerialName("name")

@@ -6,7 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ApiMovie(                //from GET /movie/{movie_id} endpoint documentation
+data class ApiMovie(
     @SerialName("id")
     val id: Int,
     @SerialName("title")

@@ -6,11 +6,9 @@ import agency.five.codebase.android.movieapp.data.network.MovieService
 import agency.five.codebase.android.movieapp.model.Movie
 import agency.five.codebase.android.movieapp.model.MovieCategory
 import agency.five.codebase.android.movieapp.model.MovieDetails
-import android.util.Log
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.runBlocking
 
 private const val STOP_TIMEOUT_MILIS = 1000L
 
@@ -82,9 +80,7 @@ class MovieRepositoryImpl(
 
     override suspend fun addMovieToFavorites(movieId: Int) {
         val movie = findMovie(movieId)
-        Log.i("FIND", "ADD FAVS: ${movie.title}")
-
-        movie.imageUrl?.let { DbFavoriteMovie(movie.id, it) }?.let { movieDao.insertMovie(it) }
+        movieDao.insertMovie(DbFavoriteMovie(movie.id, movie.imageUrl ?: ""))
     }
 
     private suspend fun findMovie(movieId: Int): Movie {
@@ -103,16 +99,14 @@ class MovieRepositoryImpl(
     override suspend fun removeMovieFromFavorites(movieId: Int) = movieDao.deleteMovie(movieId)
 
     override suspend fun toggleFavorite(movieId: Int) {
-        runBlocking(bgDispatcher) {
-            val favoriteMovies = favorites.first()
-            val favoriteMovie = favoriteMovies.filter {
-                it.id == movieId
-            }
-            if (favoriteMovie.isNotEmpty()) {
-                removeMovieFromFavorites(movieId)
-            } else {
-                addMovieToFavorites(movieId)
-            }
+        val favoriteMovies = favorites.first()
+        val favoriteMovie = favoriteMovies.filter {
+            it.id == movieId
+        }
+        if (favoriteMovie.isNotEmpty()) {
+            removeMovieFromFavorites(movieId)
+        } else {
+            addMovieToFavorites(movieId)
         }
     }
 }
