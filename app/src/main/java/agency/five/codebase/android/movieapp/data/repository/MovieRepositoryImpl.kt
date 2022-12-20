@@ -84,16 +84,15 @@ class MovieRepositoryImpl(
     }
 
     private suspend fun findMovie(movieId: Int): Movie {
-        lateinit var movie: Movie
         moviesByCategory.values.forEach { value ->
             val movies = value.first()
             movies.forEach {
                 if (it.id == movieId) {
-                    movie = it
+                    return it
                 }
             }
         }
-        return movie
+        throw java.lang.IllegalArgumentException("No movie with id: $movieId found!")
     }
 
     override suspend fun removeMovieFromFavorites(movieId: Int) = movieDao.deleteMovie(movieId)

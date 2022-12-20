@@ -180,7 +180,8 @@ fun MovieDetailsOverviewSection(
                 CrewItem(
                     viewState = CrewItemViewState(
                         crewman.crewItemViewState.name, crewman.crewItemViewState.job
-                    )
+                    ),
+                    modifier = Modifier.padding(end = MaterialTheme.spacing.medium)
                 )
             }
         }

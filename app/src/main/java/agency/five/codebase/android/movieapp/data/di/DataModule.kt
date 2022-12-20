@@ -1,6 +1,5 @@
 package agency.five.codebase.android.movieapp.data.di
 
-import agency.five.codebase.android.movieapp.data.database.FavoriteMovieDao
 import agency.five.codebase.android.movieapp.data.database.MovieAppDatabase
 import agency.five.codebase.android.movieapp.data.repository.MovieRepository
 import agency.five.codebase.android.movieapp.data.repository.MovieRepositoryImpl
@@ -25,10 +24,8 @@ val databaseModule = module {
             APP_DATABASE_NAME
         ).build()
     }
-
-    fun provideFavoriteMovieDao(db: MovieAppDatabase):FavoriteMovieDao = db.getMovieDao()
     single{
-        provideFavoriteMovieDao(get())
+        get<MovieAppDatabase>().getMovieDao()
     }
 }
 
