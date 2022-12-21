@@ -175,12 +175,13 @@ fun MovieDetailsOverviewSection(
             )
         ) {
             items(items = movieDetailsViewState.crew, key = { crewman ->
-                crewman.id
+                crewman.hashCode()
             }) { crewman ->
                 CrewItem(
                     viewState = CrewItemViewState(
                         crewman.crewItemViewState.name, crewman.crewItemViewState.job
-                    )
+                    ),
+                    modifier = Modifier.padding(end = MaterialTheme.spacing.medium)
                 )
             }
         }

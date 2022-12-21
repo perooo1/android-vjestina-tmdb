@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 
 const val CIRCLE_DEGREES = 360
 const val START_ANGLE = -90f
@@ -53,7 +52,7 @@ fun UserScoreProgressBar(
             )
         }
         Text(
-            text = userScore.toString(),
+            text = String.format("%.1f",userScore),
             style = UserScoreProgressBarText
         )
     }
